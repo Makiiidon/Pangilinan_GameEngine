@@ -96,7 +96,7 @@ bool Window::broadcast()
 {
 	MSG msg;
 
-	EngineTime::LogFrameStart();
+	//EngineTime::LogFrameStart();
 
 	this->onUpdate();
 
@@ -107,7 +107,7 @@ bool Window::broadcast()
 	}
 
 	Sleep(1);
-	EngineTime::LogFrameEnd();
+	//EngineTime::LogFrameEnd();
 
 	return true;
 }

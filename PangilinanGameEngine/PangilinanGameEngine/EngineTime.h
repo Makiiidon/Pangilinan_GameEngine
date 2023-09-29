@@ -4,6 +4,7 @@
 #include <ctime>
 
 class Window;
+class AppWindow;
 class EngineTime
 {
 public:
@@ -27,5 +28,6 @@ private:
 	static void LogFrameEnd();
 
 	friend class Window;
+	friend class AppWindow;
 };
 

@@ -46,10 +46,10 @@ void AppWindow::onCreate()
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
 	vertex quadList1[] = {
-		{ -0.5f, -0.5f,	0.0f,  -0.32f, -0.11f, 0.0f,   0, 0, 0,   0, 1, 0}, // POS1
-		{ -0.5f,  0.5f,	0.0f,  -0.11f,  0.78f, 0.0f,   1, 1, 0,   1, 1, 0}, // POS2
-		{  0.5f, -0.5f,	0.0f,   0.75f, -0.73f, 0.0f,   0, 0, 1,   1, 0, 0}, // POS3
-		{  0.5f,  0.5f,	0.0f,   0.88f,  0.77f, 0.0f,   1, 1, 1,   0, 0, 1}, // POS4
+		{ -0.8f, -0.9f,	0.0f,  -0.32f, -0.11f, 0.0f,   0, 0, 0,   0, 1, 0}, // POS1 - Lower Left
+		{ -0.9f,  0.4f,	0.0f,  -0.11f,  0.78f, 0.0f,   1, 1, 0,   1, 1, 0}, // POS2 - Upper Left
+		{  0.9f, -0.3f,	0.0f,   0.75f, -0.73f, 0.0f,   0, 0, 1,   1, 0, 0}, // POS3 - Lower Right
+		{ -0.7f, -0.8f,	0.0f,   0.88f,  0.77f, 0.0f,   1, 1, 1,   0, 0, 1}, // POS4 - Upper Right
 	};
 
 	//vertex quadList2[] = {
@@ -87,6 +87,8 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
+	EngineTime::LogFrameStart();
+
 	Window::onUpdate();
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
@@ -102,16 +104,19 @@ void AppWindow::onUpdate()
 	m_old_time = ::GetTickCount();
 
 	m_angle += 1.57f * m_delta_time;*/
-	m_angle += 1.57f * EngineTime::getDeltaTime();
-	constant cc;
-	cc.m_angle = m_angle; 
 
+	m_angle += EngineTime::getDeltaTime() / (5000.f * ((sin(m_angle) + 1 )/ 2));
+	constant cc;
+	cc.m_angle = m_angle;
+	std::cout << cc.m_angle << std::endl;
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 
 	// DRAW QUADS
 	quad1->drawQuad(m_cb);
 
 	m_swap_chain->present(true);
+
+	EngineTime::LogFrameEnd();
 }
 
 void AppWindow::onDestroy()
