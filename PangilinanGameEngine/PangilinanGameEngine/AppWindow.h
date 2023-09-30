@@ -35,6 +35,7 @@ private:
 	/*unsigned long m_old_time = 0;
 	float m_delta_time = 0;*/
 	float m_angle = 0;
+	float m_time = 5000.0f;
 
 	Quad* quad1;
 	//Quad* quad2;

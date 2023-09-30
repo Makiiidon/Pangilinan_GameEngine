@@ -19,7 +19,8 @@ void EngineTime::initialize()
 
 double EngineTime::getDeltaTime()
 {
-	return std::chrono::duration_cast<std::chrono::microseconds>( EngineTime::sharedInstance->start - EngineTime::sharedInstance->end ).count() / 100.0f;
+	return std::chrono::duration_cast<std::chrono::microseconds>(
+		EngineTime::sharedInstance->start - EngineTime::sharedInstance->end ).count() / 1000000.0f;
 }
 
 EngineTime::EngineTime()

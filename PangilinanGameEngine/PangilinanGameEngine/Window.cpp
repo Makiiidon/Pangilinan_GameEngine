@@ -96,7 +96,7 @@ bool Window::broadcast()
 {
 	MSG msg;
 
-	//EngineTime::LogFrameStart();
+	EngineTime::LogFrameStart();
 
 	this->onUpdate();
 
