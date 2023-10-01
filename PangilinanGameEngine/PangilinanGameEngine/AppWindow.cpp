@@ -49,7 +49,7 @@ void AppWindow::onCreate()
 		{ -0.8f, -0.9f,	0.0f,  -0.32f, -0.11f, 0.0f,   0, 0, 0,   0, 1, 0}, // POS1 - Lower Left
 		{ -0.9f,  0.4f,	0.0f,  -0.11f,  0.78f, 0.0f,   1, 1, 0,   1, 1, 0}, // POS2 - Upper Left
 		{  0.9f, -0.3f,	0.0f,   0.75f, -0.73f, 0.0f,   0, 0, 1,   1, 0, 0}, // POS3 - Lower Right
-		{  0.5f,  0.4f,	0.0f,   0.88f,  0.77f, 0.0f,   1, 1, 1,   0, 0, 1}, // POS4 - Upper Right
+		{ -0.8f, -0.9f,	0.0f,   0.88f,  0.77f, 0.0f,   1, 1, 1,   0, 0, 1}, // POS4 - Upper Right
 	};
 
 	//vertex quadList2[] = {
