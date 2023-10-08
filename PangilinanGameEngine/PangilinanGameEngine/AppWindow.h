@@ -7,6 +7,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "ConstantBuffer.h"
+#include "IndexBuffer.h"
 #include "EngineTime.h"
 
 
@@ -30,10 +31,11 @@ public:
 	static AppWindow* sharedInstance;
 private:
 	SwapChain* m_swap_chain;
-	//VertexBuffer* m_vb;
+	VertexBuffer* m_vb;
 	VertexShader* m_vs;
 	PixelShader* m_ps;
 	ConstantBuffer* m_cb;
+	IndexBuffer* m_ib;
 
 	/*unsigned long m_old_time = 0;*/
 	float m_delta_time = 0;
