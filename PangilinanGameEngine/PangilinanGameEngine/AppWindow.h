@@ -12,6 +12,11 @@
 
 
 #include "Quad.h"
+#include "Cube.h"
+#include <iostream>
+#include <vector>
+
+
 
 class AppWindow : public Window
 {
@@ -42,7 +47,14 @@ private:
 	//float m_angle = 0;
 	float m_time = 5000.0f;
 
-	Quad* quad1;
+	//Quad* quad1;
+
+	
+	Cube* cube;
+	Cube* cube2;
+	Cube* cube3;
+	Cube* cube4;
+	Cube* cube5;
 	//Quad* quad2;
 	//Quad* quad3;
 };

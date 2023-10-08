@@ -4,11 +4,6 @@
 #include "Vector3D.h"
 #include "Matrix4x4.h"
 
-struct vec3
-{
-	float x, y, z;
-};
-
 struct vertex
 {
 	Vector3D position;
@@ -90,59 +85,42 @@ void AppWindow::onCreate()
 	RECT rc = this->getClientWindowRect();
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
-	vertex vertex_list[] = {
-		// FRONT FACE
-		{ Vector3D( -0.5f, -0.5f, -0.5f),    Vector3D( 1,0,0 ),  Vector3D(1,0,0) },
-		{ Vector3D( -0.5f,  0.5f, -0.5f),    Vector3D( 1,1,0 ),  Vector3D(1,1,0) },
-		{ Vector3D(  0.5f,  0.5f, -0.5f),    Vector3D( 1,1,0 ),  Vector3D(1,1,0) },
-		{ Vector3D(  0.5f, -0.5f, -0.5f),    Vector3D( 1,0,0 ),  Vector3D(1,0,0) },
-
-		// BACK FACE
-		{ Vector3D(  0.5f, -0.5f,  0.5f),    Vector3D( 0,1,0 ),  Vector3D(0,1,0) },
-		{ Vector3D(  0.5f,  0.5f,  0.5f),    Vector3D( 0,1,1 ),  Vector3D(0,1,1) },
-		{ Vector3D( -0.5f,  0.5f,  0.5f),    Vector3D( 0,1,1 ),  Vector3D(0,1,1) },
-		{ Vector3D( -0.5f, -0.5f,  0.5f),    Vector3D( 0,1,0 ),  Vector3D(0,1,0) },
-	};
-
-	m_vb = GraphicsEngine::get()->createVertexBuffer();
-	UINT size_vertex = ARRAYSIZE(vertex_list);
-
-	unsigned int index_list[] = {
-		// FRONT FACE
-		0, 1, 2,
-		2, 3, 0,
-		// BACK FACE
-		4, 5, 6,
-		6, 7, 4,
-		// TOP FACE
-		1, 6, 5,
-		5, 2, 1,
-		// BOTTOM FACE
-		7, 0, 3,
-		3, 4, 7,
-		// RIGHT FACE
-		3, 2, 5,
-		5, 4, 3,
-		// LEFT FACE
-		7, 6, 1,
-		1, 0, 7
-	};
-
-	m_ib = GraphicsEngine::get()->createIndexBuffer();
-	UINT size_index_list = ARRAYSIZE(index_list);
-
-	m_ib->load(index_list, size_index_list);
-
-	// Create a vertex buffer
-	m_vb = GraphicsEngine::get()->createVertexBuffer();
-
+	
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
 	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 
 	// load vertex shader
 	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-	m_vb->load(vertex_list, sizeof(vertex), size_vertex, shader_byte_code, size_shader);
+
+	// Create Cubes
+	cube = new Cube("Cube", shader_byte_code, size_shader);
+	cube->setPosition(-.7f, .7f, 0);
+	cube->setAnimationSpeed(2.f);
+	cube->setScale(0.2f);
+
+	cube2 = new Cube("Cube", shader_byte_code, size_shader);
+	cube2->setPosition(.7f, -.7f, 0);
+	cube2->setAnimationSpeed(1.f);
+
+	cube2->setScale(0.1f);
+
+	cube3 = new Cube("Cube", shader_byte_code, size_shader);
+	cube3->setPosition(.0f, .0f, 0);
+	cube3->setAnimationSpeed(3.f);
+	cube3->setScale(0.12f);
+
+	cube4 = new Cube("Cube", shader_byte_code, size_shader);
+	cube4->setPosition(-.3f, -.4f, 0);
+	cube4->setAnimationSpeed(4.f);
+	cube4->setScale(0.15f);
+
+	cube5 = new Cube("Cube", shader_byte_code, size_shader);
+	cube5->setPosition(.3f, -.4f, 0);
+	cube5->setAnimationSpeed(7.f);
+	cube5->setScale(0.3f);
+
+
 	GraphicsEngine::get()->releaseCompiledShader();
 
 	// load pixel shader
@@ -150,15 +128,9 @@ void AppWindow::onCreate()
 	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	GraphicsEngine::get()->releaseCompiledShader();
 
-	// INITIALIZE QUADS
-	//quad1 = new Quad(vertex_list, sizeof(vertex), size_quadList1);
+	
+	
 
-
-	constant cc;
-	cc.m_angle = 0;
-
-	m_cb = GraphicsEngine::get()->createConstantBuffer();
-	m_cb->load(&cc, sizeof(constant));
 }
 
 void AppWindow::onUpdate()
@@ -171,26 +143,28 @@ void AppWindow::onUpdate()
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
+	m_delta_time += EngineTime::getDeltaTime();
 
-	updateQuadPosition();
+	// Update the transforms of the cubes
+	cube->update(EngineTime::getDeltaTime());
+	cube2->update(-EngineTime::getDeltaTime());
+	cube3->update(-EngineTime::getDeltaTime());
+	cube4->update(-EngineTime::getDeltaTime());
+	cube5->update(-EngineTime::getDeltaTime());
+
+	cube->setRotation(m_delta_time, m_delta_time, 0);
+	cube2->setRotation(m_delta_time, m_delta_time, m_delta_time);
+	cube3->setRotation(m_delta_time, -m_delta_time, 0);
+	cube4->setRotation(m_delta_time, 0, m_delta_time);
+	cube5->setRotation(m_delta_time, 0, m_delta_time);
 
 
-	// Set Constant Buffer Data
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
+	cube->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	cube2->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	cube3->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	cube4->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	cube5->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertextShader(m_vs);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
-
-	// Set Vertex Data
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
-
-	// Draw Square
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0,0);
-
-	// DRAW QUADS
-	//quad1->drawQuad(m_cb);
 
 	m_swap_chain->present(true);
 
@@ -204,7 +178,13 @@ void AppWindow::onDestroy()
 	m_vb->release();
 	m_ib->release();
 	m_cb->release();
-	quad1->release();
+
+	cube->release();
+	cube2->release();
+	cube3->release();
+	cube4->release();
+	cube5->release();
+
 	GraphicsEngine::get()->release();
 }
 

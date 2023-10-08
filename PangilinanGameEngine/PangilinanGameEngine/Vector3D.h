@@ -30,6 +30,17 @@ public:
 		return v;
 	}
 
+	static Vector3D zeros() {
+		Vector3D v = Vector3D(0.f, 0.f, 0.f);
+		return v;
+	}
+
+	static Vector3D ones() {
+		Vector3D v = Vector3D(1.f, 1.f, 1.f);
+		return v;
+	}
+
+
 	~Vector3D() 
 	{
 
