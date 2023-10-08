@@ -4,15 +4,9 @@
 #include "Vector3D.h"
 #include "Matrix4x4.h"
 
-struct vec3
-{
-	float x, y, z;
-};
-
 struct vertex
 {
 	Vector3D position;
-	Vector3D position1;
 	Vector3D color;
 	Vector3D color1;
 }; 
@@ -46,10 +40,24 @@ void AppWindow::updateQuadPosition()
 	Matrix4x4 temp;
 
 	//cc.m_world.setTranslation(Vector3D::lerp(Vector3D(-2, -2, -2), Vector3D(2, 2, 2), m_angle));
-	cc.m_world.setScale(Vector3D::lerp(Vector3D(1,1,0), Vector3D(.5f, .5f, 0), (sin(m_delta_time) + 1.0f / 2.0f)));
+	/*cc.m_world.setScale(Vector3D::lerp(Vector3D(1,1,0), Vector3D(.5f, .5f, 0), (sin(m_delta_time) + 1.0f / 2.0f)));
 
 	temp.setTranslation(Vector3D::lerp(Vector3D(-.2f, -.2f, 0), Vector3D(.2f, .2f, 0), (sin(m_delta_time) + 1.0f / 2.0f)));
 
+	cc.m_world *= temp;*/
+
+	cc.m_world.setScale(Vector3D( 1, 1, 1 ));
+
+	temp.setIdentity();
+	temp.setRotationX(m_delta_time);
+	cc.m_world *= temp;
+
+	temp.setIdentity();
+	temp.setRotationY(m_delta_time);
+	cc.m_world *= temp;
+
+	temp.setIdentity();
+	temp.setRotationZ(m_delta_time);
 	cc.m_world *= temp;
 
 	cc.m_view.setIdentity();
@@ -64,7 +72,7 @@ void AppWindow::updateQuadPosition()
 	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
 	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
 	//cc.m_angle += m_angle *100.0f;
-	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
+	//m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 }
 
 
@@ -81,44 +89,35 @@ void AppWindow::onCreate()
 	RECT rc = this->getClientWindowRect();
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
-	vertex quadList1[] = {
-		{Vector3D( -0.5f, -0.5f,  0.0f ),  Vector3D( -0.32f, -0.11f, 0.0f ),   Vector3D( 0, 0, 0 ),   Vector3D( 0, 1, 0 )}, // POS1 - Lower Left
-		{Vector3D( -0.5f,  0.5f,  0.0f ),  Vector3D( -0.11f,  0.78f, 0.0f ),   Vector3D( 1, 1, 0 ),   Vector3D( 1, 1, 0 )}, // POS2 - Upper Left
-		{Vector3D(  0.5f, -0.5f,  0.0f ),  Vector3D(  0.75f, -0.73f, 0.0f ),   Vector3D( 0, 0, 1 ),   Vector3D( 1, 0, 0 )}, // POS3 - Lower Right
-		{Vector3D(  0.5f,  0.5f,  0.0f ),  Vector3D(  0.88f,  0.77f, 0.0f ),   Vector3D( 1, 1, 1 ),   Vector3D( 0, 0, 1 )}, // POS4 - Upper Right
-	};
+	void* shader_byte_code = nullptr;
+	size_t size_shader = 0;
+	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 
-	//vertex quadList2[] = {
-	//	{ -0.1f, -0.1f,	0.0f,  -0.2f, -0.2f, 0.0f,   1, 0, 0,   0, 1, 1}, // POS1
-	//	{ -0.1f,  0.1f,	0.0f,  -0.2f,  0.2f, 0.0f,   0, 1, 1,   0, 1, 0}, // POS2
-	//	{  0.1f, -0.1f,	0.0f,   0.2f, -0.2f, 0.0f,   1, 0, 1,   0, 0, 1}, // POS3
-	//	{  0.1f,  0.1f,	0.0f,   0.2f,  0.2f, 0.0f,   0, 1, 0,   0, 0, 1}, // POS4
-	//};
+	// load vertex shader
+	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
-	//vertex quadList3[] =
-	//{
-	//	//	//X - Y - Z
-	//	{ -0.8f, -1.0f,	0.0f,  -0.7f, -0.6f, 0.0f,   1, 0, 0,   0, 1, 1}, // POS1
-	//	{ -0.8f,  0.2f, 0.0f,  -0.5f,  0.3f, 0.0f, 0, 1, 1, 0, 1, 0}, // POS2
-	//	{ 0.8f, -0.1f,	0.0f,  -0.5f, -0.2f, 0.0f,   1, 0, 1,   0, 0, 1 }, // POS3
-	//	{ 0.8f,  0.1f,	0.0f,  -0.5f,  0.2f, 0.0f,   0, 1, 0,   0, 0, 1 }, // POS4
-	//};
+	GraphicsEngine::get()->releaseCompiledShader();
 
-	UINT size_quadList1 = ARRAYSIZE(quadList1);
-	//UINT size_quadList2 = ARRAYSIZE(quadList2);
-	//UINT size_quadList3 = ARRAYSIZE(quadList3);
+	// load pixel shader
+	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
 
+	// load pixel shader
+	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 
-	// INITIALIZE QUADS
-	quad1 = new Quad(quadList1, sizeof(vertex), size_quadList1);
-	//quad2 = new Quad(quadList2, sizeof(vertex), size_quadList2);
-	//quad3 = new Quad(quadList3, sizeof(vertex), size_quadList3);
+	GraphicsEngine::get()->releaseCompiledShader();
 
-	constant cc;
+	cube = new Cube( "Cube1", shader_byte_code, size_shader );
+
+	cube->setAnimSpeed(10.0f);
+
+	//quad = new Quad("Quad1", shader_byte_code, size_shader);
+	//quad->setAnimSpeed(10.0f);
+
+	/*constant cc;
 	cc.m_angle = 0;
 
 	m_cb = GraphicsEngine::get()->createConstantBuffer();
-	m_cb->load(&cc, sizeof(constant));
+	m_cb->load(&cc, sizeof(constant));*/
 }
 
 void AppWindow::onUpdate()
@@ -131,16 +130,16 @@ void AppWindow::onUpdate()
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
+	//updateQuadPosition();
 
-	updateQuadPosition();
+	cube->update(EngineTime::getDeltaTime());
 
 
-	// DRAW QUADS
-	quad1->drawQuad(m_cb);
+	// DRAW OBJECTS
+	//quad1->drawQuad(m_cb);
+	cube->draw(rc, m_vs, m_ps);
 
 	m_swap_chain->present(true);
-
-	EngineTime::LogFrameEnd();
 }
 
 void AppWindow::onDestroy()
@@ -148,7 +147,9 @@ void AppWindow::onDestroy()
 	Window::onDestroy();
 	m_swap_chain->release();
 	//m_vb->release();
-	quad1->release();
+	//quad1->release();
+	//m_ib->release();
+	//m_cb->release();
 	GraphicsEngine::get()->release();
 }
 

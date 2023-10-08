@@ -107,7 +107,7 @@ bool Window::broadcast()
 	}
 
 	Sleep(1);
-	//EngineTime::LogFrameEnd();
+	EngineTime::LogFrameEnd();
 
 	return true;
 }

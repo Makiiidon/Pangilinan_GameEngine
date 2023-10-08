@@ -1,55 +1,94 @@
 #include "Quad.h"
+#include "GraphicsEngine.h"
+#include "SwapChain.h"
 
-
-Quad::Quad(void* list, UINT size_vertex, UINT size_list)
+Quad::Quad(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
 {
+
+	vertex vertex_list[] = {
+		// Front
+		{Vector3D( -0.5f, -0.5f,  0.0f ),     Vector3D(0, 0, 0),   Vector3D(0, 0, 0)}, // POS1 - Lower Left
+		{Vector3D( -0.5f,  0.5f,  0.0f ),     Vector3D(1, 1, 0),   Vector3D(1, 1, 0)}, // POS2 - Upper Left
+		{Vector3D(  0.5f,  0.5f,  0.0f ),     Vector3D(0, 0, 1),   Vector3D(0, 0, 1)}, // POS3 - Lower Right
+		{Vector3D(  0.5f, -0.5f,  0.0f ),     Vector3D(1, 1, 1),   Vector3D(1, 1, 1)}, // POS4 - Upper Right
+	};
 	// Create a vertex buffer
-	m_vb = GraphicsEngine::get()->createVertexBuffer();
+	vb = GraphicsEngine::get()->createVertexBuffer();
 
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	constant cc;
+	cc.m_angle = 0;
 
-	// load vertex shader
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-
-	// load the vertices
-	m_vb->load(list, size_vertex, size_list, shader_byte_code, size_shader);
-
-	GraphicsEngine::get()->releaseCompiledShader();
-
-	// load pixel shader
-	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-
-	// load pixel shader
-	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-
-	GraphicsEngine::get()->releaseCompiledShader();
-
+	cb = GraphicsEngine::get()->createConstantBuffer();
+	cb->load(&cc, sizeof(constant));
 }
 
 Quad::~Quad()
 {
 }
 
-void Quad::drawQuad(ConstantBuffer* buffer)
+void Quad::update(float deltaTime)
 {
-	// Set Constant Buffer Data
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, buffer);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, buffer);
+	this->deltaTime = deltaTime;
+	transform.setIdentity();
+	transform.setScale(localScale);
+	cc.m_world *= transform;
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertextShader(m_vs);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
+	transform.setIdentity();
+	transform.setTranslation(localPosition);
+	cc.m_world *= transform;
+
+	transform.setIdentity();
+	transform.setRotationX(localRotation.m_x);
+	cc.m_world *= transform;
+
+	transform.setIdentity();
+	transform.setRotationY(localRotation.m_y);
+	cc.m_world *= transform;
+
+	transform.setIdentity();
+	transform.setRotationZ(localRotation.m_z);
+	cc.m_world *= transform;
+
+	ticks += this->deltaTime;
+	//Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
+	//cc.m_angle = m_delta_time + ((sin(m_delta_time / 10.0f) + (m_delta_time / 10.0f))) * 100.0f;
+	cc.m_angle += ticks * speed;
+
+
+}
+
+void Quad::draw(RECT rc, VertexShader* vertexShader, PixelShader* pixelShader)
+{
+	cc.m_view.setIdentity();
+	cc.m_projection.setOrthoLH
+	(
+		rc.right - rc.left / 400.0f,
+		rc.bottom - rc.top / 400.0f,
+		-4.0f,
+		4.0f
+	);
+
+	// Set Constant Buffer Data
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vertexShader, cb);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(pixelShader, cb);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertextShader(vertexShader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
 
 	// Set Vertex Data
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(vb);
 
 	// Draw Quad
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStip(m_vb->getSizeVertexList(), 0);
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStip(vb->getSizeVertexList(), 0);
 }
+
+void Quad::setAnimSpeed(float speed)
+{
+}
+
 
 void Quad::release()
 {
-	m_vb->release();
-	m_ps->release();
+	vb->release();
+	cb->release();
 }
