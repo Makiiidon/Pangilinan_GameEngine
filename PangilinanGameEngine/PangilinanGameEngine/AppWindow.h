@@ -47,7 +47,7 @@ private:
 	//float m_angle = 0;
 	float m_time = 5000.0f;
 
-	//Quad* quad1;
+	Quad* quad;
 
 	
 	Cube* cube;

@@ -120,6 +120,11 @@ void AppWindow::onCreate()
 	cube5->setAnimationSpeed(7.f);
 	cube5->setScale(0.3f);
 
+	quad = new Quad("Quad", shader_byte_code, size_shader);
+	quad->setPosition(.50f, .0f, 0);
+	quad->setRotation(45.0f, 45.0f, 45.0f);
+	quad->setAnimationSpeed(1.f);
+	quad->setScale(0.4f);
 
 	GraphicsEngine::get()->releaseCompiledShader();
 
@@ -147,16 +152,18 @@ void AppWindow::onUpdate()
 
 	// Update the transforms of the cubes
 	cube->update(EngineTime::getDeltaTime());
-	cube2->update(-EngineTime::getDeltaTime());
-	cube3->update(-EngineTime::getDeltaTime());
-	cube4->update(-EngineTime::getDeltaTime());
-	cube5->update(-EngineTime::getDeltaTime());
+	cube2->update(EngineTime::getDeltaTime());
+	cube3->update(EngineTime::getDeltaTime());
+	cube4->update(EngineTime::getDeltaTime());
+	cube5->update(EngineTime::getDeltaTime());
+	quad->update(EngineTime::getDeltaTime());
 
 	cube->setRotation(m_delta_time, m_delta_time, 0);
 	cube2->setRotation(m_delta_time, m_delta_time, m_delta_time);
 	cube3->setRotation(m_delta_time, -m_delta_time, 0);
 	cube4->setRotation(m_delta_time, 0, m_delta_time);
 	cube5->setRotation(m_delta_time, 0, m_delta_time);
+	quad->setRotation(m_delta_time,m_delta_time, m_delta_time);
 
 
 	cube->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
@@ -164,6 +171,7 @@ void AppWindow::onUpdate()
 	cube3->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 	cube4->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 	cube5->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	quad->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 
 
 	m_swap_chain->present(true);
@@ -184,6 +192,7 @@ void AppWindow::onDestroy()
 	cube3->release();
 	cube4->release();
 	cube5->release();
+	quad->release();
 
 	GraphicsEngine::get()->release();
 }

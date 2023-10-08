@@ -1,29 +1,33 @@
 #pragma once
 
-#include "GraphicsEngine.h"
-#include "DeviceContext.h"
-#include "SwapChain.h"
+#include "AGameObject.h"
 #include "VertexBuffer.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
 #include "ConstantBuffer.h"
+#include "DeviceContext.h"
 
 
-class Quad
+class Quad : public AGameObject
 {
 public:
-	Quad(void* list, UINT size_vertex, UINT size_list);
+	Quad(std::string name, void* shaderByteCode, size_t sizeShader);
 	~Quad();
 
-	void drawQuad(ConstantBuffer *buffer);
+	void update(float deltaTime) override;
+	void draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader) override;
+	void setAnimationSpeed(float speed);
 
 	void release();
 
 private:
 	VertexBuffer* m_vb;
-	VertexShader* m_vs;
-	PixelShader* m_ps;
 	ConstantBuffer* m_cb;
+
+	float m_ticks = 0.0f;
+	float m_deltaPos = 0.0f;
+	float m_deltaTime = 0.0f;
+	float m_speed = 10.0f;
+
+	constant cc;
 
 };
 

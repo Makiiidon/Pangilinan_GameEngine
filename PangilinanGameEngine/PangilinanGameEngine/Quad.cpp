@@ -1,45 +1,84 @@
 #include "Quad.h"
+#include "GraphicsEngine.h"
+#include "SwapChain.h"
 
 
-Quad::Quad(void* list, UINT size_vertex, UINT size_list)
+Quad::Quad(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
 {
+	vertex vertex_list[] = {
+		// FRONT FACE
+		{ Vector3D(-0.5f, -0.5f, 0.f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
+		{ Vector3D(-0.5f,  0.5f, 0.f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+		{ Vector3D(0.5f, -0.5f,  0.f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
+		{ Vector3D(0.5f,  0.5f,  0.f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+	};
+
 	// Create a vertex buffer
 	m_vb = GraphicsEngine::get()->createVertexBuffer();
 
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-
-	// load vertex shader
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-
+	
 	// load the vertices
-	m_vb->load(list, size_vertex, size_list, shader_byte_code, size_shader);
+	m_vb->load(vertex_list, sizeof(vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
+	constant ccc;
+	ccc.m_angle = 0;
 
-	GraphicsEngine::get()->releaseCompiledShader();
-
-	// load pixel shader
-	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-
-	// load pixel shader
-	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-
-	GraphicsEngine::get()->releaseCompiledShader();
-
+	m_cb = GraphicsEngine::get()->createConstantBuffer();
+	m_cb->load(&ccc, sizeof(constant));
 }
 
 Quad::~Quad()
 {
 }
 
-void Quad::drawQuad(ConstantBuffer* buffer)
+void Quad::update(float deltaTime)
 {
-	// Set Constant Buffer Data
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, buffer);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, buffer);
+	m_deltaTime = deltaTime;
+	m_ticks += m_deltaTime * m_speed;
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertextShader(m_vs);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
+	Matrix4x4 temp;
+
+	cc.m_world.setScale(localScale);
+
+	temp.setIdentity();
+	temp.setRotationZ(localRotation.m_z * m_speed);
+	cc.m_world *= temp;
+
+	temp.setIdentity();
+	temp.setRotationY(localRotation.m_y * m_speed);
+	cc.m_world *= temp;
+
+	temp.setIdentity();
+	temp.setRotationX(localRotation.m_x * m_speed);
+	cc.m_world *= temp;
+
+	temp.setIdentity();
+	temp.setTranslation(localPosition);
+	cc.m_world *= temp;
+}
+
+void Quad::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
+{
+	cc.m_view.setIdentity();
+	cc.m_projection.setOrthoLH
+	(
+		(width) / 400.0f,
+		(height) / 400.0f,
+		-4.0f,
+		4.0f
+	);
+
+	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
+	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
+	cc.m_angle += m_deltaTime;
+	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
+
+
+	// Set Constant Buffer Data
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vertex_shader, m_cb);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(pixel_shader, m_cb);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertextShader(vertex_shader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixel_shader);
 
 	// Set Vertex Data
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
@@ -48,8 +87,14 @@ void Quad::drawQuad(ConstantBuffer* buffer)
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStip(m_vb->getSizeVertexList(), 0);
 }
 
+void Quad::setAnimationSpeed(float speed)
+{
+	m_speed = speed;
+}
+
+
 void Quad::release()
 {
 	m_vb->release();
-	m_ps->release();
+	m_cb->release();
 }
