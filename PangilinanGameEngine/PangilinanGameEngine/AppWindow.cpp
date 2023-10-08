@@ -41,18 +41,14 @@ void AppWindow::updateQuadPosition()
 	constant cc;
 	m_delta_time += EngineTime::getDeltaTime();
 
-	//if (m_delta_time > 1.0f) m_delta_time = 0.0f;
-
 	Matrix4x4 temp;
 
-	//cc.m_world.setTranslation(Vector3D::lerp(Vector3D(-2, -2, -2), Vector3D(2, 2, 2), m_angle));
-	/*cc.m_world.setScale(Vector3D::lerp(Vector3D(1,1,0), Vector3D(.5f, .5f, 0), (sin(m_delta_time) + 1.0f / 2.0f)));
-
-	temp.setTranslation(Vector3D::lerp(Vector3D(-.2f, -.2f, 0), Vector3D(.2f, .2f, 0), (sin(m_delta_time) + 1.0f / 2.0f)));
-
-	cc.m_world *= temp;*/
-
 	cc.m_world.setScale(Vector3D(1, 1, 1));
+
+	temp.setIdentity();
+	temp.setTranslation(Vector3D(0,0,0));
+	cc.m_world *= temp;
+
 	temp.setIdentity();
 	temp.setRotationZ(m_delta_time);
 	cc.m_world *= temp;
@@ -61,7 +57,9 @@ void AppWindow::updateQuadPosition()
 	temp.setRotationY(m_delta_time);
 	cc.m_world *= temp;
 
-	//cc.m_world.setTranslation(Vector3D(1, 0, 1));
+	temp.setIdentity();
+	temp.setRotationX(m_delta_time);
+	cc.m_world *= temp;
 
 	cc.m_view.setIdentity();
 	cc.m_projection.setOrthoLH
@@ -74,7 +72,7 @@ void AppWindow::updateQuadPosition()
 
 	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
 	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
-	//cc.m_angle += m_angle *100.0f;
+	cc.m_angle += m_delta_time;
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 }
 
