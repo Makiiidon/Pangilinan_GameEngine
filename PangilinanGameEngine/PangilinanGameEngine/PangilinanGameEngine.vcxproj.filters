@@ -37,6 +37,7 @@
     <Filter Include="GameEngine\EngineTime">
       <UniqueIdentifier>{9324ecad-b0a8-443a-88dd-54a2b84ef5e8}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="GameEngine\Math">
       <UniqueIdentifier>{6564fcdb-5aec-48ca-bacb-c1ca6ff10087}</UniqueIdentifier>
     </Filter>
@@ -52,6 +53,8 @@
     <Filter Include="GameEngine\GameObjects\Cube">
       <UniqueIdentifier>{54578007-dc3a-4a8a-9c6e-369fbaa641e0}</UniqueIdentifier>
     </Filter>
+=======
+>>>>>>> parent of 3de195f (Added Transform Matrices)
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +134,7 @@
     <ClInclude Include="EngineTime.h">
       <Filter>GameEngine\EngineTime</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Vector3D.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
@@ -149,6 +153,8 @@
     <ClInclude Include="AGameObject.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
+=======
+>>>>>>> parent of 3de195f (Added Transform Matrices)
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.fx">
