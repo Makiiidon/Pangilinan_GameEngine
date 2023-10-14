@@ -12,6 +12,7 @@ AGameObject::~AGameObject()
 {
 }
 
+
 void AGameObject::setPosition(float x, float y, float z)
 {
 	this->localPosition = Vector3D(x, y, z);
@@ -50,6 +51,11 @@ Vector3D AGameObject::getScale()
 void AGameObject::setRotation(float x, float y, float z)
 {
 	this->localRotation = Vector3D(x, y, z);
+}
+
+void AGameObject::setRotation(float value)
+{
+	this->localRotation = Vector3D(value, value, value);
 }
 
 void AGameObject::setRotation(Vector3D rotation)

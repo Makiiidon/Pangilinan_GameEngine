@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Vector3D.h"
 #include "Matrix4x4.h"
+#include "InputSystem.h"
 
 struct vertex
 {
@@ -78,7 +79,12 @@ AppWindow::~AppWindow()
 
 void AppWindow::onCreate()
 {
+	srand(time(NULL));
+
 	Window::onCreate();
+	InputSystem::initialize();
+	InputSystem::getInstance()->addListener(this);
+
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
@@ -94,37 +100,19 @@ void AppWindow::onCreate()
 	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
 	// Create Cubes
-	cube = new Cube("Cube", shader_byte_code, size_shader);
-	cube->setPosition(-.7f, .7f, 0);
-	cube->setAnimationSpeed(2.f);
-	cube->setScale(0.2f);
+	for (int i = 0; i < 10; i++) 
+	{
+		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
 
-	cube2 = new Cube("Cube", shader_byte_code, size_shader);
-	cube2->setPosition(.7f, -.7f, 0);
-	cube2->setAnimationSpeed(1.f);
+		Vector3D position = Vector3D(randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f));
+		Vector3D rotation = Vector3D(randomFloat(0.0f, 360.0f), randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f));
 
-	cube2->setScale(0.1f);
-
-	cube3 = new Cube("Cube", shader_byte_code, size_shader);
-	cube3->setPosition(.0f, .0f, 0);
-	cube3->setAnimationSpeed(3.f);
-	cube3->setScale(0.12f);
-
-	cube4 = new Cube("Cube", shader_byte_code, size_shader);
-	cube4->setPosition(-.3f, -.4f, 0);
-	cube4->setAnimationSpeed(4.f);
-	cube4->setScale(0.15f);
-
-	cube5 = new Cube("Cube", shader_byte_code, size_shader);
-	cube5->setPosition(.3f, -.4f, 0);
-	cube5->setAnimationSpeed(7.f);
-	cube5->setScale(0.3f);
-
-	quad = new Quad("Quad", shader_byte_code, size_shader);
-	quad->setPosition(.50f, .0f, 0);
-	quad->setRotation(45.0f, 45.0f, 45.0f);
-	quad->setAnimationSpeed(1.f);
-	quad->setScale(0.4f);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
+		cube->setScale(0.25f);
+		m_gameObjects.push_back(cube);
+	}
 
 	GraphicsEngine::get()->releaseCompiledShader();
 
@@ -133,14 +121,14 @@ void AppWindow::onCreate()
 	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	GraphicsEngine::get()->releaseCompiledShader();
 
-	
-	
-
 }
 
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
+
+	InputSystem::getInstance()->update();
+
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
 		0, 0.3f, 0.4f, 1);
@@ -150,29 +138,24 @@ void AppWindow::onUpdate()
 
 	m_delta_time += EngineTime::getDeltaTime();
 
-	// Update the transforms of the cubes
-	cube->update(EngineTime::getDeltaTime());
-	cube2->update(EngineTime::getDeltaTime());
-	cube3->update(EngineTime::getDeltaTime());
-	cube4->update(EngineTime::getDeltaTime());
-	cube5->update(EngineTime::getDeltaTime());
-	quad->update(EngineTime::getDeltaTime());
+	InputUpdate();
 
-	cube->setRotation(m_delta_time, m_delta_time, 0);
-	cube2->setRotation(m_delta_time, m_delta_time, m_delta_time);
-	cube3->setRotation(m_delta_time, -m_delta_time, 0);
-	cube4->setRotation(m_delta_time, 0, m_delta_time);
-	cube5->setRotation(m_delta_time, 0, m_delta_time);
-	quad->setRotation(m_delta_time,m_delta_time, m_delta_time);
+	// Update the transforms of the Game Objects
+	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->update(EngineTime::getDeltaTime());
+	}
+	// Rotates the Game Objects
+	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->setRotation(m_rotation);
+	}
 
-
-	cube->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	cube2->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	cube3->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	cube4->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	cube5->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	quad->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-
+	// Renders the Game Objects
+	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	}
 
 	m_swap_chain->present(true);
 
@@ -187,12 +170,10 @@ void AppWindow::onDestroy()
 	m_ib->release();
 	m_cb->release();
 
-	cube->release();
-	cube2->release();
-	cube3->release();
-	cube4->release();
-	cube5->release();
-	quad->release();
+	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->release();
+	}
 
 	GraphicsEngine::get()->release();
 }
@@ -200,4 +181,46 @@ void AppWindow::onDestroy()
 AppWindow* AppWindow::getInstance()
 {
 	return sharedInstance;
+}
+
+void AppWindow::InputUpdate()
+{
+	if (isW)
+	{
+		m_rotation += EngineTime::getDeltaTime();
+	}
+	else if (isS)
+	{
+		m_rotation -= EngineTime::getDeltaTime();
+	}
+}
+
+void AppWindow::onKeyDown(int key)
+{
+	// InputSystem::getInstance()->isKeyDown('W')
+	if (key == 'W')
+	{
+		isW = true;
+	}
+
+	else if (key == 'S')
+	{
+		isS = true;
+	}
+	
+
+}
+
+void AppWindow::onKeyUp(int key)
+{
+	// InputSystem::getInstance()->isKeyUp('W')
+	if (key == 'W')
+	{
+		isW = false;
+	}
+
+	if (key == 'S')
+	{
+		isS = false;
+	}
 }

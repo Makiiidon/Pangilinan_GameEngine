@@ -25,9 +25,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{f36bd552-ff69-43bb-a20a-a36269cf4276}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\Meshes">
-      <UniqueIdentifier>{b1112b1b-3912-4703-8685-b27a90282294}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\GraphicsEngine\PixelShader">
       <UniqueIdentifier>{5acc4640-47b0-4f5c-91bb-0709af41729e}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,21 @@
     </Filter>
     <Filter Include="GameEngine\Math">
       <UniqueIdentifier>{6564fcdb-5aec-48ca-bacb-c1ca6ff10087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\InputSystem">
+      <UniqueIdentifier>{dda7f576-4d26-4d85-bd8d-77c208fc3868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\IndexBuffer">
+      <UniqueIdentifier>{1b061c43-d50a-4015-8a84-1586d8448343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject">
+      <UniqueIdentifier>{b1112b1b-3912-4703-8685-b27a90282294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Cube">
+      <UniqueIdentifier>{e4005b63-03ab-4ecf-ac60-1ff06ff57420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Quad">
+      <UniqueIdentifier>{6514b0bb-18e6-4f4d-ab9e-25ec54f60e11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +78,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>GameEngine\WindowingSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>GameEngine\Meshes</Filter>
-    </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
     </ClCompile>
@@ -80,6 +89,21 @@
     </ClCompile>
     <ClCompile Include="EngineTime.cpp">
       <Filter>GameEngine\EngineTime</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AGameObject.cpp">
+      <Filter>GameEngine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine\IndexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameEngine\GameObject\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>GameEngine\GameObject\Quad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +125,6 @@
     <ClInclude Include="Window.h">
       <Filter>GameEngine\WindowingSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>GameEngine\Meshes</Filter>
-    </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
     </ClInclude>
@@ -121,6 +142,24 @@
     </ClInclude>
     <ClInclude Include="Matrix4x4.h">
       <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AGameObject.h">
+      <Filter>GameEngine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine\IndexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameEngine\GameObject\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>GameEngine\GameObject\Quad</Filter>
+    </ClInclude>
+    <ClInclude Include="InputListener.h">
+      <Filter>GameEngine\InputSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

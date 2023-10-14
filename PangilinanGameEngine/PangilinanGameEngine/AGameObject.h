@@ -16,6 +16,7 @@ public:
 
 	virtual void update(float deltaTime) = 0;
 	virtual void draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader) = 0;
+	virtual void release() = 0;
 
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D position);
@@ -27,6 +28,7 @@ public:
 	Vector3D getScale();
 
 	void setRotation(float x, float y, float z);
+	void setRotation(float value);
 	void setRotation(Vector3D rotation);
 	Vector3D getLocalRotation();
 

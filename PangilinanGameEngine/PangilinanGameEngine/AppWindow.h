@@ -9,6 +9,7 @@
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
 #include "EngineTime.h"
+#include "InputListener.h"
 
 
 #include "Quad.h"
@@ -18,7 +19,7 @@
 
 
 
-class AppWindow : public Window
+class AppWindow : public Window, public InputListener
 {
 public:
 	AppWindow();
@@ -32,6 +33,9 @@ public:
 	virtual void onUpdate() override;
 	virtual void onDestroy() override;
 
+	void onKeyDown(int key) override;
+	void onKeyUp(int key) override;
+
 	AppWindow* getInstance();
 	static AppWindow* sharedInstance;
 private:
@@ -44,17 +48,23 @@ private:
 
 	/*unsigned long m_old_time = 0;*/
 	float m_delta_time = 0;
+	float m_rotation = 0;
+	bool isW = false;
+	bool isS = false;
 	//float m_angle = 0;
 	float m_time = 5000.0f;
-
-	Quad* quad;
+	
+	//Cube* cube;
+	std::vector<AGameObject*> m_gameObjects;
 
 	
-	Cube* cube;
-	Cube* cube2;
-	Cube* cube3;
-	Cube* cube4;
-	Cube* cube5;
-	//Quad* quad2;
-	//Quad* quad3;
+	float randomFloat(float a, float b) 
+	{
+		float random = ((float)rand()) / (float)RAND_MAX;
+		float diff = b - a;
+		float r = random * diff;
+		return a + r;
+	}
+
+	void InputUpdate();
 };
