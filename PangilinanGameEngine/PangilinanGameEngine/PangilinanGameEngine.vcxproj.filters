@@ -55,6 +55,12 @@
     <Filter Include="GameEngine\GameObject\Quad">
       <UniqueIdentifier>{6514b0bb-18e6-4f4d-ab9e-25ec54f60e11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObject\Camera">
+      <UniqueIdentifier>{35733ea4-a6a6-4e8e-a9cb-f00147600a38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\SceneCameraHandler">
+      <UniqueIdentifier>{7c4d08bb-ba52-4f77-9d32-60428ce1874b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="Quad.cpp">
       <Filter>GameEngine\GameObject\Quad</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameEngine\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCameraHandler.cpp">
+      <Filter>GameEngine\SceneCameraHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +172,18 @@
     </ClInclude>
     <ClInclude Include="InputListener.h">
       <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameEngine\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4D.h">
+      <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCameraHandler.h">
+      <Filter>GameEngine\SceneCameraHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

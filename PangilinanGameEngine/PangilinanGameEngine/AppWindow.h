@@ -35,22 +35,33 @@ public:
 
 	void onKeyDown(int key) override;
 	void onKeyUp(int key) override;
+	void onMouseMove(const Point deltaPos) override;
+
+	void onLeftMouseDown(const Point deltaPos) override;
+	void onLeftMouseUp(const Point deltaPos) override;
+
+	void onRightMouseDown(const Point deltaPos) override;
+	void onRightMouseUp(const Point deltaPos) override;
 
 	AppWindow* getInstance();
 	static AppWindow* sharedInstance;
 private:
 	SwapChain* m_swap_chain;
-	VertexBuffer* m_vb;
 	VertexShader* m_vs;
 	PixelShader* m_ps;
+	/*VertexBuffer* m_vb;
 	ConstantBuffer* m_cb;
-	IndexBuffer* m_ib;
+	IndexBuffer* m_ib;*/
 
 	/*unsigned long m_old_time = 0;*/
 	float m_delta_time = 0;
+
 	float m_rotation = 0;
-	bool isW = false;
-	bool isS = false;
+
+	// Input Flags
+	bool isW = false,
+		isS = false;
+
 	//float m_angle = 0;
 	float m_time = 5000.0f;
 	

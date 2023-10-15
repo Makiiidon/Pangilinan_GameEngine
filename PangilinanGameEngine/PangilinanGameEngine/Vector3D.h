@@ -18,10 +18,6 @@ public:
 	{
 
 	}
-	Vector3D(float value) : m_x(value), m_y(value), m_z(value)
-	{
-
-	}
 
 	static Vector3D lerp(const Vector3D& start, const Vector3D& end, float delta) 
 	{

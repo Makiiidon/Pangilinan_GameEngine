@@ -4,6 +4,7 @@
 #include "Vector3D.h"
 #include "Matrix4x4.h"
 #include "InputSystem.h"
+#include "SceneCameraHandler.h";
 
 struct vertex
 {
@@ -69,7 +70,7 @@ void AppWindow::updateQuadPosition()
 	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
 	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
 	cc.m_angle += m_delta_time;
-	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
+	//m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 }
 
 
@@ -84,6 +85,8 @@ void AppWindow::onCreate()
 	Window::onCreate();
 	InputSystem::initialize();
 	InputSystem::getInstance()->addListener(this);
+
+	SceneCameraHandler::initialize();
 
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
@@ -126,8 +129,8 @@ void AppWindow::onCreate()
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
-
 	InputSystem::getInstance()->update();
+	SceneCameraHandler::getInstance()->update();
 
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
@@ -166,9 +169,6 @@ void AppWindow::onDestroy()
 {
 	Window::onDestroy();
 	m_swap_chain->release();
-	m_vb->release();
-	m_ib->release();
-	m_cb->release();
 
 	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -223,4 +223,28 @@ void AppWindow::onKeyUp(int key)
 	{
 		isS = false;
 	}
+}
+
+void AppWindow::onMouseMove(const Point deltaPos)
+{
+	
+
+}
+
+void AppWindow::onLeftMouseDown(const Point deltaPos)
+{
+}
+
+void AppWindow::onLeftMouseUp(const Point deltaPos)
+{
+}
+
+void AppWindow::onRightMouseDown(const Point deltaPos)
+{
+	
+}
+
+void AppWindow::onRightMouseUp(const Point deltaPos)
+{
+	
 }

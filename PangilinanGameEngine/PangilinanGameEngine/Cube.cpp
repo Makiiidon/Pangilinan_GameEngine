@@ -1,6 +1,7 @@
 #include "Cube.h"
 #include "GraphicsEngine.h"
 #include "SwapChain.h"
+#include "SceneCameraHandler.h"
 
 Cube::Cube(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
 {
@@ -95,7 +96,6 @@ void Cube::update(float deltaTime)
 
 void Cube::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
 {
-
 	cc.m_view.setIdentity();
 	cc.m_projection.setOrthoLH
 	(
@@ -104,6 +104,9 @@ void Cube::draw(int width, int height, VertexShader* vertex_shader, PixelShader*
 		-4.0f,
 		4.0f
 	);
+
+	//Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
+	//cc.m_view = cc.m_view.multiplyTo(cameraMatrix);
 
 	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
 	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
@@ -124,6 +127,7 @@ void Cube::draw(int width, int height, VertexShader* vertex_shader, PixelShader*
 
 	// Draw Square
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
+
 }
 
 void Cube::setAnimationSpeed(float speed)

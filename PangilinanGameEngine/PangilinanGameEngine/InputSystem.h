@@ -26,6 +26,12 @@ private:
 	void callOnKeyDown(int key);
 	void callOnKeyUp(int key);
 
+	void callOnMouseMove(Point deltaPosition);
+	void callOnLeftMouseDown(Point deltaPosition);
+	void callOnLeftMouseUp(Point deltaPosition);
+	void callOnRightMouseDown(Point deltaPosition);
+	void callOnRightMouseUp(Point deltaPosition);
+
 	std::vector<InputListener*> inputListenerList;
 
 	unsigned char keyStates[256] = {};
@@ -36,6 +42,8 @@ private:
 	InputSystem(InputSystem const&) {};
 	InputSystem& operator=(InputSystem const&) {};
 
+	Point oldMousePos;
 
+	bool firstTimeCall = true;
 };
 

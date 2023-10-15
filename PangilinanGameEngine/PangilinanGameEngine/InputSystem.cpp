@@ -44,18 +44,61 @@ void InputSystem::removeListener(InputListener* listener)
 
 void InputSystem::update()
 {
-	if (GetKeyboardState(keyStates)) // update keyStates
+	POINT currentPosition = {};
+	GetCursorPos(&currentPosition);
+
+	if (this->firstTimeCall) 
 	{
-		for (int i = 0; i < ARRAYSIZE(keyStates); i++) 
+		this->firstTimeCall = false;
+		this->oldMousePos = Point(currentPosition.x, currentPosition.y);
+	}
+
+	if (this->oldMousePos.getX() != currentPosition.x || 
+		this->oldMousePos.getY() != currentPosition.y)
+	{
+		Point deltaPosition = Point(
+			currentPosition.x - this->oldMousePos.getX(),
+			currentPosition.y - this->oldMousePos.getY());
+
+		this->callOnMouseMove(deltaPosition);
+	}
+
+	this->oldMousePos = Point(currentPosition.x, currentPosition.y);
+
+	if (GetKeyboardState(keyStates)) //update keyStates
+	{
+		for (int i = 0; i < ARRAYSIZE(keyStates); i++)
 		{
-			// this->keyStates[i] & 0x80 checks whether a key has been pressed (regardless of whether it's toggled)
+			// this->keyStates[i] & 0x80 checks whether a key has been pressed (regardless of whether it is toggled / untoggled)
 			if (this->keyStates[i] & 0x80 && this->keyStates[i] != this->oldKeyStates[i])
 			{
-				callOnKeyDown(i);
+				if (VK_LBUTTON == i && this->keyStates[i] != this->oldKeyStates[i])
+				{
+					Point deltaPt = Point(currentPosition.x - this->oldMousePos.getX(), currentPosition.y - this->oldMousePos.getY());
+					this->callOnLeftMouseDown(deltaPt);
+				}
+				else if (VK_RBUTTON == i && this->keyStates[i] != this->oldKeyStates[i])
+				{
+					Point deltaPt = Point(currentPosition.x - this->oldMousePos.getX(), currentPosition.y - this->oldMousePos.getY());
+					this->callOnRightMouseDown(deltaPt);
+				}
+				else
+					callOnKeyDown(i);
 			}
 			else if (this->keyStates[i] != this->oldKeyStates[i])
 			{
-				callOnKeyUp(i);
+				if (VK_LBUTTON == i && this->keyStates[i] != this->oldKeyStates[i])
+				{
+					Point deltaPt = Point(currentPosition.x - this->oldMousePos.getX(), currentPosition.y - this->oldMousePos.getY());
+					this->callOnLeftMouseUp(deltaPt);
+				}
+				else if (VK_RBUTTON == i && this->keyStates[i] != this->oldKeyStates[i])
+				{
+					Point deltaPt = Point(currentPosition.x - this->oldMousePos.getX(), currentPosition.y - this->oldMousePos.getY());
+					this->callOnRightMouseUp(deltaPt);
+				}
+				else
+					callOnKeyUp(i);
 			}
 		}
 
@@ -111,6 +154,41 @@ void InputSystem::callOnKeyUp(int key)
 	for (int i = 0; i < inputListenerList.size(); i++)
 	{
 		this->inputListenerList[i]->onKeyUp(key);
+	}
+}
+
+void InputSystem::callOnMouseMove(Point deltaPosition)
+{
+	for (int i = 0; i < this->inputListenerList.size(); i++) {
+		this->inputListenerList[i]->onMouseMove(deltaPosition);
+	}
+}
+
+void InputSystem::callOnLeftMouseDown(Point deltaPosition)
+{
+	for (int i = 0; i < this->inputListenerList.size(); i++) {
+		this->inputListenerList[i]->onLeftMouseDown(deltaPosition);
+	}
+}
+
+void InputSystem::callOnLeftMouseUp(Point deltaPosition)
+{
+	for (int i = 0; i < this->inputListenerList.size(); i++) {
+		this->inputListenerList[i]->onLeftMouseUp(deltaPosition);
+	}
+}
+
+void InputSystem::callOnRightMouseDown(Point deltaPosition)
+{
+	for (int i = 0; i < this->inputListenerList.size(); i++) {
+		this->inputListenerList[i]->onRightMouseDown(deltaPosition);
+	}
+}
+
+void InputSystem::callOnRightMouseUp(Point deltaPosition)
+{
+	for (int i = 0; i < this->inputListenerList.size(); i++) {
+		this->inputListenerList[i]->onRightMouseUp(deltaPosition);
 	}
 }
 
