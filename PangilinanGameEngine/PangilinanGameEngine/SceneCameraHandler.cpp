@@ -21,11 +21,12 @@ SceneCameraHandler* SceneCameraHandler::getInstance()
 void SceneCameraHandler::initialize()
 {
 	sharedInstance = new SceneCameraHandler();
+
 }
 
 void SceneCameraHandler::destroy()
 {
-
+	
 }
 
 void SceneCameraHandler::update()

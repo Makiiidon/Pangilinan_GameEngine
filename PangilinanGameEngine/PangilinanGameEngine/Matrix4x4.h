@@ -152,6 +152,19 @@ public:
 		::memcpy(m_mat, matrix.m_mat, sizeof(float) * 16);
 	}
 
+	void setPerspectiveFovLH(float fov, float aspect, float znear, float zfar) 
+	{
+		this->setIdentity();
+		float yscale = 1.0f / tan( fov / 2.0f );
+		float xscale = yscale / aspect;
+		this->m_mat[0][0] = xscale;
+		this->m_mat[1][1] = yscale;
+		this->m_mat[2][2] = zfar / ( zfar - znear );
+		this->m_mat[2][3] = 1.0f;
+		this->m_mat[3][2] = ( -znear * zfar ) / ( zfar - znear );
+
+	}
+
 	Vector3D getFront()
 	{
 		return Vector3D(m_mat[2][0], m_mat[2][1], m_mat[2][2]);

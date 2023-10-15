@@ -107,7 +107,7 @@ void AppWindow::onCreate()
 	{
 		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
 
-		Vector3D position = Vector3D(randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f));
+		Vector3D position = Vector3D(randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f), 0.0f);
 		Vector3D rotation = Vector3D(randomFloat(0.0f, 360.0f), randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f));
 
 		cube->setPosition(position);

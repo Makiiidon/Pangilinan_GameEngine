@@ -26,12 +26,15 @@ public:
 	void onRightMouseUp(const Point deltaPos) override;
 
 private:
-	float moveSpeed = 10.0f;
-	Matrix4x4 worldCam;
+	float moveSpeed = 4.0f;
+	float lookSensitivity = 0.1f;
 	bool isW = false,
 		isS = false,
 		isA = false,
 		isD = false,
 		isMouseRight = false;
+
+	float forward = 0;
+	float right = 0;
 };
 

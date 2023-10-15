@@ -1,8 +1,12 @@
 #include "Camera.h"
 #include "InputSystem.h"
+#include "EngineTime.h"
 
 Camera::Camera(std::string name) : AGameObject(name)
 {
+	InputSystem::getInstance()->addListener(this);
+	this->localMatrix.setIdentity();
+	localPosition = (Vector3D(0, 0, -2.0f));
 }
 
 Camera::~Camera()
@@ -11,17 +15,14 @@ Camera::~Camera()
 
 void Camera::update(float deltaTime)
 {
-
-	//if (!isMouseRight) return;
 	Vector3D localPos = this->getLocalPosition();
 	Vector3D temp = localPos;
-	
+
 	// Vertical Movement
 	// InputSystem::getInstance()->isKeyDown('D')
 	if (isW)
 	{
-		std::cout << "Working\n";
-
+		//temp += localMatrix.getFront() * deltaTime * moveSpeed;
 		temp.m_z += deltaTime * moveSpeed;
 		this->setPosition(temp);
 		this->updateViewMatrix();
@@ -34,7 +35,7 @@ void Camera::update(float deltaTime)
 	}
 
 	// Horizontal Movement
-	else if (isD)
+	if (isD)
 	{
 		temp.m_x += deltaTime * moveSpeed;
 		this->setPosition(temp);
@@ -42,11 +43,12 @@ void Camera::update(float deltaTime)
 	}
 	else if (isA)
 	{
-		temp.m_z -= deltaTime * moveSpeed;
+		temp.m_x -= deltaTime * moveSpeed;
 		this->setPosition(temp);
 		this->updateViewMatrix();
 	}
 
+	std::cout << "X: " << localPosition.m_x << " Y: " << localPosition.m_y << " Z: " << localPosition.m_z << "\n";
 }
 
 void Camera::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
@@ -55,7 +57,7 @@ void Camera::draw(int width, int height, VertexShader* vertex_shader, PixelShade
 
 void Camera::updateViewMatrix()
 {
-	worldCam;	worldCam.setIdentity();
+	Matrix4x4 worldCam;	worldCam.setIdentity();
 	Matrix4x4 temp; temp.setIdentity();
 
 	Vector3D localRot = this->getLocalRotation();
@@ -70,11 +72,12 @@ void Camera::updateViewMatrix()
 	worldCam = worldCam.multiplyTo(temp);
 
 	worldCam.getInverse();
+	this->localMatrix = worldCam;
 }
 
 Matrix4x4 Camera::getViewMatrix()
 {
-	return worldCam;
+	return this->localMatrix;
 }
 
 void Camera::release()
@@ -125,6 +128,15 @@ void Camera::onKeyUp(int key)
 
 void Camera::onMouseMove(const Point deltaPos)
 {
+	if (!isMouseRight) return;
+
+	// Mouse Movement
+	localRotation.m_x -= deltaPos.getY() * EngineTime::getDeltaTime() * lookSensitivity;
+	localRotation.m_y -= deltaPos.getX() * EngineTime::getDeltaTime() * lookSensitivity;
+
+	this->updateViewMatrix();
+	//std::cout << "X: " << localRotation.m_x << " Y: " << localRotation.m_y << " Z: " << localRotation.m_z << "\n";
+
 }
 
 void Camera::onLeftMouseDown(const Point deltaPos)

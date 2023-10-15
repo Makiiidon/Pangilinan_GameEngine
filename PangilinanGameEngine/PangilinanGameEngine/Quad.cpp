@@ -1,6 +1,7 @@
 #include "Quad.h"
 #include "GraphicsEngine.h"
 #include "SwapChain.h"
+#include "SceneCameraHandler.h"
 
 
 Quad::Quad(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
@@ -59,13 +60,18 @@ void Quad::update(float deltaTime)
 void Quad::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
 {
 	cc.m_view.setIdentity();
-	cc.m_projection.setOrthoLH
+	/*cc.m_projection.setOrthoLH
 	(
 		(width) / 400.0f,
 		(height) / 400.0f,
 		-4.0f,
 		4.0f
-	);
+	);*/
+
+	cc.m_projection.setPerspectiveFovLH(1.57f, ((float)width / height), 0.1f, 100.f);
+
+	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
+	cc.m_view = cc.m_view.multiplyTo(cameraMatrix);
 
 	// Using a diagonal sine wave (sinx + x) makes the time move from fast to slow and vice versa
 	//cc.m_angle = m_angle + ((sin(m_angle / 10.0f) + (m_angle / 10.0f))) * 100.0f;
