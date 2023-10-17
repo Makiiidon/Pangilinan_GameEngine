@@ -9,7 +9,8 @@ public:
 	//Initialize SwapChain for a window
 	bool init(HWND hwnd, UINT width, UINT height);
 
-
+	ID3D11RenderTargetView* getRenderTargetView();
+	ID3D11DepthStencilView* getDepthStencilView();
 	bool present(bool vsync);
 
 	//Release the swap chain

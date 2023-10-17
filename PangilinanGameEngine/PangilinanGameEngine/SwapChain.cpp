@@ -49,25 +49,39 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 	}
 
 	// Stencil mask
-	//D3D11_TEXTURE2D_DESC texDesc = {};
+	D3D11_TEXTURE2D_DESC texDesc = {};
+	texDesc.Width = width;
+	texDesc.Height = height;
+	texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	texDesc.MipLevels = 1;
+	texDesc.SampleDesc.Count = 1;
+	texDesc.SampleDesc.Quality = 0;
+	texDesc.MiscFlags = 0;
+	texDesc.ArraySize = 1;
+	texDesc.CPUAccessFlags = 0;
 
-	//texDesc.Width = width;
-	//texDesc.Height = height;
-	//texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	//texDesc.Usage = D3D11_USAGE_DEFAULT;
-	//texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	//texDesc.MipLevels = 1;
-	//texDesc.SampleDesc.Count = 1;
-	//texDesc.SampleDesc.Quality = 0;
-	//texDesc.MiscFlags = 0;
-	//texDesc.ArraySize = 1;
-	//texDesc.CPUAccessFlags = 0;
+	buffer = nullptr;
+	HRESULT depthTexHr = device->CreateTexture2D(&texDesc, NULL, &buffer);
 
-	//HRESULT depthResult = device->CreateTexture2D(&texDesc, NULL, &buffer);
+	HRESULT depthStencilHr = device->CreateDepthStencilView(buffer, NULL, &this->m_dsv);
+	buffer->Release();
 
-	//HRESULT depthStencilResult = device->CreateDepthStencilView(buffer, NULL, &)
 
 	return true;
+}
+
+
+
+ID3D11RenderTargetView* SwapChain::getRenderTargetView()
+{
+	return m_rtv;
+}
+
+ID3D11DepthStencilView* SwapChain::getDepthStencilView()
+{
+	return m_dsv;
 }
 
 bool SwapChain::present(bool vsync)
