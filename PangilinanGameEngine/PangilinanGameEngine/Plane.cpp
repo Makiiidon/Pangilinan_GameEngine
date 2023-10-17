@@ -40,6 +40,7 @@ void Plane::update(float deltaTime)
 	Matrix4x4 temp;
 
 	localRotation.m_y = sin(m_ticks);
+	localPosition.m_x = sin(m_ticks);
 
 	cc.m_world.setScale(localScale);
 

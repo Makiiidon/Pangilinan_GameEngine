@@ -62,6 +62,7 @@ Cube::Cube(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObj
 
 	m_cb = GraphicsEngine::get()->createConstantBuffer();
 	m_cb->load(&ccc, sizeof(constant));
+
 }
 
 
@@ -87,9 +88,6 @@ void Cube::update(float deltaTime)
 
 	}
 	localScale = localScale.lerp(Vector3D::ones() * 1.5f, Vector3D::ones(), m_scaleTicks);
-
-	localPosition.m_x = sin(m_ticks);
-
 
 	cc.m_world.setScale(localScale);
 

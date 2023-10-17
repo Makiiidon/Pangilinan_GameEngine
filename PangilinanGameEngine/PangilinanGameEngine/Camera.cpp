@@ -6,7 +6,7 @@ Camera::Camera(std::string name) : AGameObject(name)
 {
 	InputSystem::getInstance()->addListener(this);
 	this->localMatrix.setIdentity();
-	localPosition = (Vector3D(0, 0, -2.0f));
+	localPosition = (Vector3D(0, 0, -3.0f));
 	this->updateViewMatrix();
 
 }

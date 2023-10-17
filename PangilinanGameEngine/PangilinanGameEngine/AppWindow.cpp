@@ -109,20 +109,40 @@ void AppWindow::onCreate()
 	Vector3D rotation = Vector3D::zeros();
 	cube->setPosition(position);
 	cube->setRotation(rotation);
-	cube->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
+	cube->setAnimationSpeed(randomFloat(1, 3.75f));
 	cube->setScale(1);
 	m_gameObjects.push_back(cube);
+
+	Cube* cube2 = new Cube("Cube", shader_byte_code, size_shader);
+	position = Vector3D(-2, 1, 0);
+	rotation = Vector3D::zeros();
+	cube2->setPosition(position);
+	cube2->setRotation(rotation);
+	cube2->setAnimationSpeed(randomFloat(1, 3.75f));
+	cube2->setScale(1);
+	m_gameObjects.push_back(cube2);
+
+	Cube* cube3 = new Cube("Cube", shader_byte_code, size_shader);
+	position = Vector3D(-2, 1, 4);
+	rotation = Vector3D::zeros();
+	cube3->setPosition(position);
+	cube3->setRotation(rotation);
+	cube3->setAnimationSpeed(randomFloat(1, 3.75f));
+	cube3->setScale(1);
+	m_gameObjects.push_back(cube3);
 #pragma endregion
 
+#pragma region Plane
 	Plane* plane = new Plane("Plane", shader_byte_code, size_shader);
 	position = Vector3D(0, -1, 0);
-	rotation = Vector3D(0,0,0);
+	rotation = Vector3D(0, 0, 0);
 	plane->setPosition(position);
 	plane->setRotation(rotation);
 	plane->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
 	plane->setScale(1);
 	m_gameObjects.push_back(plane);
-	
+#pragma endregion
+
 
 	GraphicsEngine::get()->releaseCompiledShader();
 

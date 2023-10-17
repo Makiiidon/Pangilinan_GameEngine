@@ -43,7 +43,7 @@ private:
 	float m_speed = 2.0f;
 	float m_scaleTicks = 0.0f;
 	constant cc;
-
+	Vector3D m_initialPosition;
 
 	bool isScaleUp   = false,
 		 isScaleDown = false;
