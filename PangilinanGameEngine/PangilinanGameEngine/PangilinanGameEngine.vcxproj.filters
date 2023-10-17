@@ -61,6 +61,9 @@
     <Filter Include="GameEngine\SceneCameraHandler">
       <UniqueIdentifier>{7c4d08bb-ba52-4f77-9d32-60428ce1874b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObject\Plane">
+      <UniqueIdentifier>{ef40fc14-6bbd-4841-9445-77bb79308ecd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="SceneCameraHandler.cpp">
       <Filter>GameEngine\SceneCameraHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>GameEngine\GameObject\Plane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="SceneCameraHandler.h">
       <Filter>GameEngine\SceneCameraHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>GameEngine\GameObject\Plane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,8 @@ private:
 		isS = false,
 		isA = false,
 		isD = false,
+		isQ = false,
+		isE = false,
 		isMouseRight = false;
 
 	float forward = 0;

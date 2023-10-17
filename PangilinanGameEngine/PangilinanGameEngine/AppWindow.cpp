@@ -102,20 +102,27 @@ void AppWindow::onCreate()
 	// load vertex shader
 	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
-	// Create Cubes
-	for (int i = 0; i < 10; i++) 
-	{
-		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
+	// Create Game Objects
+#pragma region Cube
+	Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
+	Vector3D position = Vector3D(0, 1, 0);
+	Vector3D rotation = Vector3D::zeros();
+	cube->setPosition(position);
+	cube->setRotation(rotation);
+	cube->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
+	cube->setScale(1);
+	m_gameObjects.push_back(cube);
+#pragma endregion
 
-		Vector3D position = Vector3D(randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f), 0.0f);
-		Vector3D rotation = Vector3D(randomFloat(0.0f, 360.0f), randomFloat(-0.75, 0.75f), randomFloat(-0.75, 0.75f));
-
-		cube->setPosition(position);
-		cube->setRotation(rotation);
-		cube->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
-		cube->setScale(0.25f);
-		m_gameObjects.push_back(cube);
-	}
+	Plane* plane = new Plane("Plane", shader_byte_code, size_shader);
+	position = Vector3D(0, -1, 0);
+	rotation = Vector3D(0,0,0);
+	plane->setPosition(position);
+	plane->setRotation(rotation);
+	plane->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
+	plane->setScale(1);
+	m_gameObjects.push_back(plane);
+	
 
 	GraphicsEngine::get()->releaseCompiledShader();
 
@@ -149,10 +156,10 @@ void AppWindow::onUpdate()
 		m_gameObjects[i]->update(EngineTime::getDeltaTime());
 	}
 	// Rotates the Game Objects
-	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
+	/*for (unsigned int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects[i]->setRotation(m_rotation);
-	}
+	}*/
 
 	// Renders the Game Objects
 	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
@@ -185,44 +192,17 @@ AppWindow* AppWindow::getInstance()
 
 void AppWindow::InputUpdate()
 {
-	if (isW)
-	{
-		m_rotation += EngineTime::getDeltaTime();
-	}
-	else if (isS)
-	{
-		m_rotation -= EngineTime::getDeltaTime();
-	}
+
 }
 
 void AppWindow::onKeyDown(int key)
 {
-	// InputSystem::getInstance()->isKeyDown('W')
-	if (key == 'W')
-	{
-		isW = true;
-	}
-
-	else if (key == 'S')
-	{
-		isS = true;
-	}
-	
 
 }
 
 void AppWindow::onKeyUp(int key)
 {
-	// InputSystem::getInstance()->isKeyUp('W')
-	if (key == 'W')
-	{
-		isW = false;
-	}
 
-	if (key == 'S')
-	{
-		isS = false;
-	}
 }
 
 void AppWindow::onMouseMove(const Point deltaPos)

@@ -14,6 +14,7 @@
 
 #include "Quad.h"
 #include "Cube.h"
+#include "Plane.h"
 #include <iostream>
 #include <vector>
 
@@ -56,11 +57,6 @@ private:
 	/*unsigned long m_old_time = 0;*/
 	float m_delta_time = 0;
 
-	float m_rotation = 0;
-
-	// Input Flags
-	bool isW = false,
-		isS = false;
 
 	//float m_angle = 0;
 	float m_time = 5000.0f;

@@ -7,6 +7,8 @@ Camera::Camera(std::string name) : AGameObject(name)
 	InputSystem::getInstance()->addListener(this);
 	this->localMatrix.setIdentity();
 	localPosition = (Vector3D(0, 0, -2.0f));
+	this->updateViewMatrix();
+
 }
 
 Camera::~Camera()
@@ -48,7 +50,20 @@ void Camera::update(float deltaTime)
 		this->updateViewMatrix();
 	}
 
-	std::cout << "X: " << localPosition.m_x << " Y: " << localPosition.m_y << " Z: " << localPosition.m_z << "\n";
+	if (isE) 
+	{
+		temp.m_y += deltaTime * moveSpeed;
+		this->setPosition(temp);
+		this->updateViewMatrix();
+	}
+	else if (isQ)
+	{
+		temp.m_y -= deltaTime * moveSpeed;
+		this->setPosition(temp);
+		this->updateViewMatrix();
+	}
+
+	//localPosition.debugPrint();
 }
 
 void Camera::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
@@ -103,6 +118,15 @@ void Camera::onKeyDown(int key)
 	{
 		isA = true;
 	}
+
+	if (key == 'Q')
+	{
+		isQ = true;
+	}
+	else if (key == 'E')
+	{
+		isE = true;
+	}
 }
 
 void Camera::onKeyUp(int key)
@@ -123,6 +147,15 @@ void Camera::onKeyUp(int key)
 	else if (key == 'A')
 	{
 		isA = false;
+	}
+
+	if (key == 'Q')
+	{
+		isQ = false;
+	}
+	else if (key == 'E')
+	{
+		isE = false;
 	}
 }
 

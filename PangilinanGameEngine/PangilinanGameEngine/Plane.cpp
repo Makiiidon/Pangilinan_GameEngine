@@ -1,23 +1,24 @@
-#include "Quad.h"
+#include "Plane.h"
 #include "GraphicsEngine.h"
 #include "SwapChain.h"
 #include "SceneCameraHandler.h"
 
 
-Quad::Quad(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
+Plane::Plane(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
 {
 	vertex vertex_list[] = {
 		// FRONT FACE
-		{ Vector3D(-0.5f, -0.5f, 0.f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
-		{ Vector3D(-0.5f,  0.5f, 0.f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
-		{ Vector3D(0.5f, -0.5f,  0.f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
-		{ Vector3D(0.5f,  0.5f,  0.f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
+		{ Vector3D(-1.0f,  0.0f,  -1.0f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+		{ Vector3D(-1.0f,  0.0f,   1.0f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+		{ Vector3D( 1.0f,  0.0f,  -1.0f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+		{ Vector3D( 1.0f,  0.0f,   1.0f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
 	};
+
 
 	// Create a vertex buffer
 	m_vb = GraphicsEngine::get()->createVertexBuffer();
 
-	
+
 	// load the vertices
 	m_vb->load(vertex_list, sizeof(vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
 	constant ccc;
@@ -27,16 +28,18 @@ Quad::Quad(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObj
 	m_cb->load(&ccc, sizeof(constant));
 }
 
-Quad::~Quad()
+Plane::~Plane()
 {
 }
 
-void Quad::update(float deltaTime)
+void Plane::update(float deltaTime)
 {
 	m_deltaTime = deltaTime;
 	m_ticks += m_deltaTime * m_speed;
 
 	Matrix4x4 temp;
+
+	localRotation.m_y = sin(m_ticks);
 
 	cc.m_world.setScale(localScale);
 
@@ -57,7 +60,7 @@ void Quad::update(float deltaTime)
 	cc.m_world *= temp;
 }
 
-void Quad::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
+void Plane::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
 {
 	cc.m_view.setIdentity();
 	/*cc.m_projection.setOrthoLH
@@ -93,13 +96,13 @@ void Quad::draw(int width, int height, VertexShader* vertex_shader, PixelShader*
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStip(m_vb->getSizeVertexList(), 0);
 }
 
-void Quad::setAnimationSpeed(float speed)
+void Plane::setAnimationSpeed(float speed)
 {
 	m_speed = speed;
 }
 
 
-void Quad::release()
+void Plane::release()
 {
 	m_vb->release();
 	m_cb->release();

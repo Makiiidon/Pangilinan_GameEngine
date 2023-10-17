@@ -5,8 +5,10 @@
 #include "ConstantBuffer.h"
 #include "DeviceContext.h"
 
+#include "InputListener.h"
 
-class Cube : public AGameObject
+
+class Cube : public AGameObject, public InputListener
 {
 public:
 	Cube(std::string name, void* shaderByteCode, size_t sizeShader);
@@ -18,6 +20,19 @@ public:
 
 	void release() override;
 
+	// Keyboard pure virtual callback functions
+	void onKeyDown(int key) override;
+	void onKeyUp(int key) override;
+
+	// Mouse pure virtual callback functions
+	void onMouseMove(const Point deltaPos) override;
+
+	void onLeftMouseDown(const Point deltaPos) override;
+	void onLeftMouseUp(const Point deltaPos) override;
+
+	void onRightMouseDown(const Point deltaPos) override;
+	void onRightMouseUp(const Point deltaPos) override;
+
 private:
 	VertexBuffer* m_vb;
 	IndexBuffer* m_ib;
@@ -25,8 +40,12 @@ private:
 	float m_ticks = 0.0f;
 	float m_deltaPos = 0.0f;
 	float m_deltaTime = 0.0f;
-	float m_speed = 10.0f;
+	float m_speed = 2.0f;
+	float m_scaleTicks = 0.0f;
 	constant cc;
 
+
+	bool isScaleUp   = false,
+		 isScaleDown = false;
 };
 

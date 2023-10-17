@@ -2,19 +2,22 @@
 #include "GraphicsEngine.h"
 #include "SwapChain.h"
 #include "SceneCameraHandler.h"
+#include "InputSystem.h"
+
 
 Cube::Cube(std::string name, void* shaderByteCode, size_t sizeShader) : AGameObject(name)
 {
+	InputSystem::getInstance()->addListener(this);
 	vertex vertex_list[] = {
 		// FRONT FACE
-		{ Vector3D(-0.5f, -0.5f, -0.5f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
+		{ Vector3D(-0.5f, -0.5f, -0.5f),    Vector3D(1,1,0),  Vector3D(1,0,0) },
 		{ Vector3D(-0.5f,  0.5f, -0.5f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
-		{ Vector3D(0.5f,  0.5f, -0.5f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
-		{ Vector3D(0.5f, -0.5f, -0.5f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
+		{ Vector3D(0.5f,   0.5f, -0.5f),    Vector3D(1,1,0),  Vector3D(1,1,0) },
+		{ Vector3D(0.5f,  -0.5f, -0.5f),    Vector3D(1,0,0),  Vector3D(1,0,0) },
 
 		// BACK FACE
-		{ Vector3D(0.5f, -0.5f,  0.5f),    Vector3D(0,1,0),  Vector3D(0,1,0) },
-		{ Vector3D(0.5f,  0.5f,  0.5f),    Vector3D(0,1,1),  Vector3D(0,1,1) },
+		{ Vector3D(0.5f,  -0.5f,  0.5f),    Vector3D(0,1,0),  Vector3D(0,1,0) },
+		{ Vector3D(0.5f,   0.5f,  0.5f),    Vector3D(0,1,1),  Vector3D(0,1,1) },
 		{ Vector3D(-0.5f,  0.5f,  0.5f),    Vector3D(0,1,1),  Vector3D(0,1,1) },
 		{ Vector3D(-0.5f, -0.5f,  0.5f),    Vector3D(0,1,0),  Vector3D(0,1,0) },
 	};
@@ -74,18 +77,32 @@ void Cube::update(float deltaTime)
 
 	Matrix4x4 temp;
 
+	if (isScaleUp)
+	{
+		m_scaleTicks += m_deltaTime * m_speed;
+	}
+	else if (isScaleDown) 
+	{
+		m_scaleTicks -= m_deltaTime * m_speed;
+
+	}
+	localScale = localScale.lerp(Vector3D::ones() * 1.5f, Vector3D::ones(), m_scaleTicks);
+
+	localPosition.m_x = sin(m_ticks);
+
+
 	cc.m_world.setScale(localScale);
 
 	temp.setIdentity();
-	temp.setRotationZ(localRotation.m_z * m_speed);
+	temp.setRotationZ(localRotation.m_z);
 	cc.m_world *= temp;
 
 	temp.setIdentity();
-	temp.setRotationY(localRotation.m_y * m_speed);
+	temp.setRotationY(localRotation.m_y);
 	cc.m_world *= temp;
 
 	temp.setIdentity();
-	temp.setRotationX(localRotation.m_x * m_speed);
+	temp.setRotationX(localRotation.m_x);
 	cc.m_world *= temp;
 
 	temp.setIdentity();
@@ -142,4 +159,50 @@ void Cube::release()
 	m_vb->release();
 	m_ib->release();
 	m_cb->release();
+}
+
+void Cube::onKeyDown(int key)
+{
+	// Scale
+	if (key == 'F')
+	{
+		isScaleDown = true;
+	}
+	if (key == 'R') 
+	{
+		isScaleUp = true;
+	}
+}
+
+void Cube::onKeyUp(int key)
+{
+	// Scale
+	if (key == 'F')
+	{
+		isScaleDown = false;
+	}
+	else if (key == 'R')
+	{
+		isScaleUp = false;
+	}
+}
+
+void Cube::onMouseMove(const Point deltaPos)
+{
+}
+
+void Cube::onLeftMouseDown(const Point deltaPos)
+{
+}
+
+void Cube::onLeftMouseUp(const Point deltaPos)
+{
+}
+
+void Cube::onRightMouseDown(const Point deltaPos)
+{
+}
+
+void Cube::onRightMouseUp(const Point deltaPos)
+{
 }
