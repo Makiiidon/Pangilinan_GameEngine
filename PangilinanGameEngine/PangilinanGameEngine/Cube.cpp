@@ -78,7 +78,7 @@ void Cube::update(float deltaTime)
 
 	Matrix4x4 temp;
 
-	if (isScaleUp)
+	/*if (isScaleUp)
 	{
 		m_scaleTicks += m_deltaTime * m_speed;
 	}
@@ -87,7 +87,10 @@ void Cube::update(float deltaTime)
 		m_scaleTicks -= m_deltaTime * m_speed;
 
 	}
-	localScale = localScale.lerp(Vector3D::ones() * 1.5f, Vector3D::ones(), m_scaleTicks);
+	localScale = localScale.lerp(Vector3D::ones() * 1.5f, Vector3D::ones(), m_scaleTicks);*/
+	localRotation.m_x = m_ticks;
+	localRotation.m_y = m_ticks;
+	localRotation.m_z = m_ticks;
 
 	cc.m_world.setScale(localScale);
 

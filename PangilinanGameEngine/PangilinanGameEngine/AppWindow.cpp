@@ -141,9 +141,9 @@ void AppWindow::onCreate()
 	{
 		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
 		Vector3D position = Vector3D(
-			randomFloat(-4.0f, 4.0f), 
-			randomFloat(-4.0f, 4.0f), 
-			randomFloat(-4.0f, 4.0f)
+			randomFloat(-3.0f, 3.0f), 
+			randomFloat(-3.0f, 3.0f), 
+			randomFloat(-3.0f, 3.0f)
 		);
 		Vector3D rotation = Vector3D::zeros();
 		cube->setPosition(position);
@@ -188,11 +188,11 @@ void AppWindow::onUpdate()
 	InputSystem::getInstance()->update();
 	SceneCameraHandler::getInstance()->update();
 
-	GUIHandler::get()->onUpdateStart();
+	bool animate = GUIHandler::get()->onUpdateStart(m_swap_chain);
 
 	//CLEAR THE RENDER TARGET 
-	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		0, 0.3f, 0.4f, 1);
+	/*GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
+		0, 0.3f, .4f, 1);*/
 	//SET VIEWPORT OF RENDER TARGET IN WHICH WE HAVE TO DRAW
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
@@ -203,7 +203,8 @@ void AppWindow::onUpdate()
 	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
 	{
 		// Update the transforms of the Game Objects
-		m_gameObjects[i]->update(EngineTime::getDeltaTime());
+		if(animate)
+			m_gameObjects[i]->update(EngineTime::getDeltaTime());
 
 		// Renders the Game Objects
 		m_gameObjects[i]->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);

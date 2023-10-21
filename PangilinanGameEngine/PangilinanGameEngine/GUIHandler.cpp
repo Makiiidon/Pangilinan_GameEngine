@@ -1,5 +1,7 @@
 #include "GUIHandler.h"
 #include "imgui_stdlib.h"
+#include "GraphicsEngine.h"
+#include "DeviceContext.h"
 #include <iostream>
 #include <string>
 
@@ -30,7 +32,7 @@ bool GUIHandler::init(HWND hwnd, ID3D11Device *device, ID3D11DeviceContext *devi
 	return true;
 }
 
-void GUIHandler::onUpdateStart()
+bool GUIHandler::onUpdateStart(SwapChain* m_swap_chain)
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
@@ -40,9 +42,10 @@ void GUIHandler::onUpdateStart()
 	static bool showDemoWindow = false;
 	static bool isPlayAnimation = true;
 	ImVec2 sz = ImVec2(-FLT_MIN, 0.0f);
-	static float color[4] = {0,0,0,0};
+	//static float color[4] = { 0, 0.3f, 0.4f, 1 };
+	static float color[4] = { 0.2f, 0.2f, 0.2f, 1 };
 
-	ImGui::Begin("Scene Settings");
+	ImGui::Begin("Scene Settings", nullptr, ImGuiWindowFlags_NoResize);
 	ImGui::Text("Below are settongs for configuring the Scene");
 
 	ImGui::Checkbox("Show Demo Window", &showDemoWindow);
@@ -51,8 +54,7 @@ void GUIHandler::onUpdateStart()
 		ImGui::ShowDemoWindow(); // Show demo window! :)
 	
 
-	static ImGuiColorEditFlags colorEditFlag = ImGuiColorEditFlags_DisplayRGB;
-
+	static ImGuiColorEditFlags colorEditFlag = ImGuiColorEditFlags_NoAlpha;
 	ImGui::ColorEdit4("Color", color, colorEditFlag);
 
 	std::string animationButtonStr = "Play Animation";
@@ -64,6 +66,11 @@ void GUIHandler::onUpdateStart()
 	}
 
 	ImGui::End();
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(m_swap_chain,
+		color[0], color[1], color[2], color[3]);
+
+	return isPlayAnimation;
 }
 
 void GUIHandler::onUpdateEnd()
