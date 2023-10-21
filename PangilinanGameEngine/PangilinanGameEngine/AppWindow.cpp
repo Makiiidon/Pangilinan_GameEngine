@@ -6,6 +6,11 @@
 #include "InputSystem.h"
 #include "SceneCameraHandler.h";
 
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
+
 struct vertex
 {
 	Vector3D position;
@@ -104,7 +109,7 @@ void AppWindow::onCreate()
 
 	// Create Game Objects
 #pragma region Cube
-	Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
+	/*Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
 	Vector3D position = Vector3D(0, 1, 0);
 	Vector3D rotation = Vector3D::zeros();
 	cube->setPosition(position);
@@ -129,18 +134,34 @@ void AppWindow::onCreate()
 	cube3->setRotation(rotation);
 	cube3->setAnimationSpeed(randomFloat(1, 3.75f));
 	cube3->setScale(1);
-	m_gameObjects.push_back(cube3);
+	m_gameObjects.push_back(cube3);*/
+
+	for (int i = 0; i < 50; i++) 
+	{
+		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
+		Vector3D position = Vector3D(
+			randomFloat(-4.0f, 4.0f), 
+			randomFloat(-4.0f, 4.0f), 
+			randomFloat(-4.0f, 4.0f)
+		);
+		Vector3D rotation = Vector3D::zeros();
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setAnimationSpeed(randomFloat(1, 3.75f));
+		cube->setScale(1);
+		m_gameObjects.push_back(cube);
+	}
 #pragma endregion
 
 #pragma region Plane
-	Plane* plane = new Plane("Plane", shader_byte_code, size_shader);
+	/*Plane* plane = new Plane("Plane", shader_byte_code, size_shader);
 	position = Vector3D(0, -1, 0);
 	rotation = Vector3D(0, 0, 0);
 	plane->setPosition(position);
 	plane->setRotation(rotation);
 	plane->setAnimationSpeed(randomFloat(-3.75f, 3.75f));
 	plane->setScale(1);
-	m_gameObjects.push_back(plane);
+	m_gameObjects.push_back(plane);*/
 #pragma endregion
 
 
@@ -151,6 +172,20 @@ void AppWindow::onCreate()
 	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	GraphicsEngine::get()->releaseCompiledShader();
 
+
+	// GUI
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(Window::getHWND());
+	ImGui_ImplDX11_Init(GraphicsEngine::get()->getDevice(), GraphicsEngine::get()->getImmediateDeviceContext()->getDeviceContext());
+
 }
 
 void AppWindow::onUpdate()
@@ -158,6 +193,14 @@ void AppWindow::onUpdate()
 	Window::onUpdate();
 	InputSystem::getInstance()->update();
 	SceneCameraHandler::getInstance()->update();
+
+	// Start the Dear ImGui frame
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	ImGui::ShowDemoWindow(); // Show demo window! :)
+	ImGui::Text("Hello World!");
 
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
@@ -168,24 +211,21 @@ void AppWindow::onUpdate()
 
 	m_delta_time += EngineTime::getDeltaTime();
 
-	InputUpdate();
 
-	// Update the transforms of the Game Objects
 	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
 	{
+		// Update the transforms of the Game Objects
 		m_gameObjects[i]->update(EngineTime::getDeltaTime());
-	}
-	// Rotates the Game Objects
-	/*for (unsigned int i = 0; i < m_gameObjects.size(); i++)
-	{
-		m_gameObjects[i]->setRotation(m_rotation);
-	}*/
 
-	// Renders the Game Objects
-	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
-	{
+		// Renders the Game Objects
 		m_gameObjects[i]->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+
 	}
+
+	// Rendering GUI
+	// (Your code clears your framebuffer, renders your other stuff etc.)
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	m_swap_chain->present(true);
 
@@ -202,6 +242,12 @@ void AppWindow::onDestroy()
 		m_gameObjects[i]->release();
 	}
 
+	InputSystem::destroy();
+
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
 	GraphicsEngine::get()->release();
 }
 
@@ -212,23 +258,18 @@ AppWindow* AppWindow::getInstance()
 
 void AppWindow::InputUpdate()
 {
-
 }
 
 void AppWindow::onKeyDown(int key)
 {
-
 }
 
 void AppWindow::onKeyUp(int key)
 {
-
 }
 
 void AppWindow::onMouseMove(const Point deltaPos)
 {
-	
-
 }
 
 void AppWindow::onLeftMouseDown(const Point deltaPos)

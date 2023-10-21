@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\School Files\10th Term\GDENG03\Game Engine Github Fix\Pangilinan_GameEngine\PangilinanGameEngine\PangilinanGameEngine\DearIMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,9 +137,18 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DearIMGUI\imgui.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_demo.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_draw.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_stdlib.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_tables.cpp" />
+    <ClCompile Include="DearIMGUI\imgui_widgets.cpp" />
     <ClCompile Include="DeviceContext.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GraphicsEngine.cpp" />
+    <ClCompile Include="GUIHandler.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,9 +167,19 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DearIMGUI\imconfig.h" />
+    <ClInclude Include="DearIMGUI\imgui.h" />
+    <ClInclude Include="DearIMGUI\imgui_impl_dx11.h" />
+    <ClInclude Include="DearIMGUI\imgui_impl_win32.h" />
+    <ClInclude Include="DearIMGUI\imgui_internal.h" />
+    <ClInclude Include="DearIMGUI\imgui_stdlib.h" />
+    <ClInclude Include="DearIMGUI\imstb_rectpack.h" />
+    <ClInclude Include="DearIMGUI\imstb_textedit.h" />
+    <ClInclude Include="DearIMGUI\imstb_truetype.h" />
     <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GraphicsEngine.h" />
+    <ClInclude Include="GUIHandler.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="InputListener.h" />
     <ClInclude Include="InputSystem.h" />
