@@ -20,7 +20,8 @@ public:
 
 	static GameObjectManager* getInstance();
 	static void initialize();
-	static void destroy();
+	void destroy();
+
 
 	AGameObject* findObjectByName(std::string name);
 	List getAllGameObjects();
@@ -38,6 +39,6 @@ public:
 private:
 	List gameObjects;
 	HashTable hashTable;
-
+	static GameObjectManager* sharedInstance;
 };
 

@@ -32,6 +32,8 @@ public:
 	void setRotation(Vector3D rotation);
 	Vector3D getLocalRotation();
 
+	std::string getName();
+
 protected:
 	std::string name;
 	Vector3D localPosition;

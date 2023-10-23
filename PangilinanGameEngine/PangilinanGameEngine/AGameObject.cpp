@@ -67,3 +67,8 @@ Vector3D AGameObject::getLocalRotation()
 {
 	return this->localRotation;
 }
+
+std::string AGameObject::getName()
+{
+	return name;
+}
