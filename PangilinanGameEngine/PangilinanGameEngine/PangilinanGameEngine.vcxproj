@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\School Files\10th Term\GDENG03\Game Engine Github Fix\Pangilinan_GameEngine\PangilinanGameEngine\PangilinanGameEngine\DearIMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/DearIMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="AGameObject.cpp" />
     <ClCompile Include="AppWindow.cpp" />
+    <ClCompile Include="AUIScreen.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -157,6 +158,9 @@
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="SceneCameraHandler.cpp" />
     <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="ToolBar.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="UINames.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -164,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="AGameObject.h" />
     <ClInclude Include="AppWindow.h" />
+    <ClInclude Include="AUIScreen.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
@@ -190,6 +195,9 @@
     <ClInclude Include="Quad.h" />
     <ClInclude Include="SceneCameraHandler.h" />
     <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="ToolBar.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="UINames.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vector4D.h" />
     <ClInclude Include="VertexBuffer.h" />

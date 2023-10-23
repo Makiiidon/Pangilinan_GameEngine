@@ -70,6 +70,21 @@
     <Filter Include="GameEngine\GUIHandler">
       <UniqueIdentifier>{cccc3356-f395-4fc8-b162-99b15a96f07e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\UI">
+      <UniqueIdentifier>{24307835-97c5-4dba-97b0-25b3c0700c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\UIManager">
+      <UniqueIdentifier>{bf3fb5b2-9381-4a01-93cb-741172a2d31b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\AUIScreen">
+      <UniqueIdentifier>{2de59a24-1492-469a-a175-deb151729759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\UINames">
+      <UniqueIdentifier>{42259d42-2516-4f92-9279-4537466be76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\Screens">
+      <UniqueIdentifier>{d5311e1b-55ea-441f-94a5-2d8e85058633}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,7 +168,19 @@
     <ClCompile Include="DearIMGUI\imgui_widgets.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="GUIHandler.cpp" />
+    <ClCompile Include="GUIHandler.cpp">
+      <Filter>GameEngine\GUIHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>GameEngine\UI\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AUIScreen.cpp">
+      <Filter>GameEngine\UI\AUIScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="UINames.cpp">
+      <Filter>GameEngine\UI\UINames</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -252,7 +279,19 @@
     <ClInclude Include="DearIMGUI\imstb_truetype.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUIHandler.h" />
+    <ClInclude Include="GUIHandler.h">
+      <Filter>GameEngine\GUIHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>GameEngine\UI\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AUIScreen.h">
+      <Filter>GameEngine\UI\AUIScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="UINames.h">
+      <Filter>GameEngine\UI\UINames</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolBar.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.fx">

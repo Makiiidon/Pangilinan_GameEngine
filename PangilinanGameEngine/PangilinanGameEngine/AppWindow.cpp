@@ -5,7 +5,7 @@
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 #include "SceneCameraHandler.h";
-#include "GUIHandler.h"
+#include "UIManager.h"
 
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
@@ -175,11 +175,12 @@ void AppWindow::onCreate()
 
 
 	// GUI
-	GUIHandler::get()->init(
+	/*GUIHandler::get()->init(
 		Window::getHWND(), 
 		GraphicsEngine::get()->getDevice(), 
 		GraphicsEngine::get()->getImmediateDeviceContext()->getDeviceContext()
-	);
+	);*/
+	UIManager::initialize(Window::getHWND());
 }
 
 void AppWindow::onUpdate()
@@ -188,11 +189,11 @@ void AppWindow::onUpdate()
 	InputSystem::getInstance()->update();
 	SceneCameraHandler::getInstance()->update();
 
-	bool animate = GUIHandler::get()->onUpdateStart(m_swap_chain);
+	//bool animate = GUIHandler::get()->onUpdateStart(m_swap_chain);
 
 	//CLEAR THE RENDER TARGET 
-	/*GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		0, 0.3f, .4f, 1);*/
+	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
+		0, 0.3f, .4f, 1);
 	//SET VIEWPORT OF RENDER TARGET IN WHICH WE HAVE TO DRAW
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
@@ -203,8 +204,8 @@ void AppWindow::onUpdate()
 	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
 	{
 		// Update the transforms of the Game Objects
-		if(animate)
-			m_gameObjects[i]->update(EngineTime::getDeltaTime());
+		//if(animate)
+		m_gameObjects[i]->update(EngineTime::getDeltaTime());
 
 		// Renders the Game Objects
 		m_gameObjects[i]->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
@@ -212,7 +213,8 @@ void AppWindow::onUpdate()
 	}
 
 	// Rendering GUI
-	GUIHandler::get()->onUpdateEnd();
+	//GUIHandler::get()->onUpdateEnd();
+	UIManager::getInstance()->drawAllUI();
 
 	m_swap_chain->present(true);
 
@@ -231,7 +233,7 @@ void AppWindow::onDestroy()
 
 	InputSystem::destroy();
 
-	GUIHandler::get()->release();
+	//GUIHandler::get()->release();
 
 	GraphicsEngine::get()->release();
 }
