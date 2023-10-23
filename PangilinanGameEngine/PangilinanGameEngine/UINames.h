@@ -13,12 +13,19 @@
 class UINames
 {
 public:
-	const std::string PROFILER_SCREEN = "PROFILER_SCREEN";
-	const std::string MENU_SCREEN = "MENU_SCREEN";
-	const std::string INSPECTOR_SCREEN = "INSPECTOR_SCREEN";
-	const std::string HIERARCHY_SCREEN = "HIERARCHY_SCREEN";
-	
-		
-		
+	UINames() {
+		PROFILER_SCREEN = "PROFILER_SCREEN";
+		MENU_SCREEN = "MENU_SCREEN";
+		INSPECTOR_SCREEN = "INSPECTOR_SCREEN";
+		HIERARCHY_SCREEN = "HIERARCHY_SCREEN";
+	}
+	~UINames() {}
+	std::string PROFILER_SCREEN;
+	std::string MENU_SCREEN;
+	std::string INSPECTOR_SCREEN;
+	std::string HIERARCHY_SCREEN;
 };
+
+
+
 

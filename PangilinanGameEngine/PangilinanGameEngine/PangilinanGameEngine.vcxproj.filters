@@ -79,11 +79,23 @@
     <Filter Include="GameEngine\UI\AUIScreen">
       <UniqueIdentifier>{2de59a24-1492-469a-a175-deb151729759}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\UI\UINames">
-      <UniqueIdentifier>{42259d42-2516-4f92-9279-4537466be76a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\UI\Screens">
       <UniqueIdentifier>{d5311e1b-55ea-441f-94a5-2d8e85058633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\Screens\ToolBar">
+      <UniqueIdentifier>{c818865a-28ed-47d4-8812-f78aa08f4374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\Screens\SceneOutliner">
+      <UniqueIdentifier>{f8ffccf2-21ce-48f2-bdf6-91283b148dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\Screens\InspectorWindow">
+      <UniqueIdentifier>{ce5af4d2-fda4-4f34-901f-20254708217b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UI\Screens\EngineProfiler">
+      <UniqueIdentifier>{92c3a24c-29a9-42cf-b490-c23be97a633c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObjects\GameObjectManager">
+      <UniqueIdentifier>{b9274ca2-f13b-4a90-8fde-618f428bc263}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,10 +189,21 @@
     <ClCompile Include="AUIScreen.cpp">
       <Filter>GameEngine\UI\AUIScreen</Filter>
     </ClCompile>
-    <ClCompile Include="UINames.cpp">
-      <Filter>GameEngine\UI\UINames</Filter>
+    <ClCompile Include="ToolBar.cpp">
+      <Filter>GameEngine\UI\Screens\ToolBar</Filter>
     </ClCompile>
-    <ClCompile Include="ToolBar.cpp" />
+    <ClCompile Include="SceneOutliner.cpp">
+      <Filter>GameEngine\UI\Screens\SceneOutliner</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>GameEngine\UI\Screens\InspectorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineProfiler.cpp">
+      <Filter>GameEngine\UI\Screens\EngineProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameEngine\GameObjects\GameObjectManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -288,10 +311,24 @@
     <ClInclude Include="AUIScreen.h">
       <Filter>GameEngine\UI\AUIScreen</Filter>
     </ClInclude>
-    <ClInclude Include="UINames.h">
-      <Filter>GameEngine\UI\UINames</Filter>
+    <ClInclude Include="ToolBar.h">
+      <Filter>GameEngine\UI\Screens\ToolBar</Filter>
     </ClInclude>
-    <ClInclude Include="ToolBar.h" />
+    <ClInclude Include="SceneOutliner.h">
+      <Filter>GameEngine\UI\Screens\SceneOutliner</Filter>
+    </ClInclude>
+    <ClInclude Include="UINames.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>GameEngine\UI\Screens\InspectorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineProfiler.h">
+      <Filter>GameEngine\UI\Screens\EngineProfiler</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameEngine\GameObjects\GameObjectManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.fx">

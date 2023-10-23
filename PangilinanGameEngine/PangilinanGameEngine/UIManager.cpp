@@ -2,6 +2,9 @@
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
 #include "ToolBar.h"
+#include "SceneOutliner.h"
+#include "InspectorWindow.h"
+#include "EngineProfiler.h"
 
 UIManager* UIManager::sharedInstance = nullptr;
 
@@ -51,8 +54,19 @@ void UIManager::drawAllUI()
 
 UIManager::UIManager(HWND windowHandle)
 {
-	ToolBar* toolBar = new ToolBar("ToolBar");
+	UINames uiNames;
+
+	ToolBar* toolBar = new ToolBar(uiNames.MENU_SCREEN);
 	uiList.push_back(toolBar);
+
+	SceneOutliner* sceneOutliner = new SceneOutliner(uiNames.HIERARCHY_SCREEN);
+	uiList.push_back(sceneOutliner);
+
+	InspectorWindow* inspectorWindow = new InspectorWindow(uiNames.INSPECTOR_SCREEN);
+	uiList.push_back(inspectorWindow);
+
+	EngineProfiler* engineProfiler = new EngineProfiler(uiNames.PROFILER_SCREEN);
+	uiList.push_back(engineProfiler);
 
 	for (int i = 0; i < uiList.size(); i++)
 	{
