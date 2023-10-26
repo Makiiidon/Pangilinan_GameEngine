@@ -83,6 +83,7 @@ void GameObjectManager::renderAll(int viewWidth, int viewHeight, VertexShader* v
 
 void GameObjectManager::addObject(AGameObject* gameObject)
 {
+	selectedObject = gameObject;
 	gameObjects.push_back(gameObject);
 	hashTable.insert({ gameObject->getName(), gameObject });
 }
