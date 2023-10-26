@@ -72,3 +72,13 @@ std::string AGameObject::getName()
 {
 	return name;
 }
+
+void AGameObject::setActive(bool value)
+{
+	isActive = value;
+}
+
+bool AGameObject::isGameObjectActive()
+{
+	return isActive;
+}

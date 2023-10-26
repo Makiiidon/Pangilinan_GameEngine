@@ -34,6 +34,9 @@ public:
 
 	std::string getName();
 
+	void setActive(bool value);
+	bool isGameObjectActive();
+
 protected:
 	std::string name;
 	Vector3D localPosition;
@@ -41,6 +44,7 @@ protected:
 	Vector3D localRotation;
 	Matrix4x4 localMatrix;
 
+	bool isActive = true;
 
 	struct vertex
 	{

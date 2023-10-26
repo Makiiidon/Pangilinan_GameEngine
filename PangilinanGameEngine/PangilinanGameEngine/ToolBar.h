@@ -9,5 +9,8 @@ public:
 	~ToolBar();
 	void drawUI() override;
 
+private:
+	void* shader_byte_code;
+	size_t size_shader;
 };
 

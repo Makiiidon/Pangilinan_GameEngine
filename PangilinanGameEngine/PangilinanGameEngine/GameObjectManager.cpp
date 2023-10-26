@@ -2,6 +2,7 @@
 #include "Cube.h"
 #include "Plane.h"
 #include "EngineTime.h"
+#include <string>
 
 
 GameObjectManager* GameObjectManager::sharedInstance = nullptr;
@@ -66,7 +67,8 @@ void GameObjectManager::updateAll()
 	float deltaTime = EngineTime::getDeltaTime();
 	for (int i = 0; i < gameObjects.size(); i++) 
 	{
-		gameObjects[i]->update(deltaTime);
+		if (gameObjects[i]->isGameObjectActive())
+			gameObjects[i]->update(deltaTime);
 	}
 }
 
@@ -74,7 +76,8 @@ void GameObjectManager::renderAll(int viewWidth, int viewHeight, VertexShader* v
 {
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		gameObjects[i]->draw(viewWidth, viewHeight, vs, ps);
+		if(gameObjects[i]->isGameObjectActive())
+			gameObjects[i]->draw(viewWidth, viewHeight, vs, ps);
 	}
 }
 
@@ -90,23 +93,27 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 	{
 	case GameObjectManager::CUBE:
 	{
-		Cube* cube = new Cube("Cube", shaderByteCode, sizeShader);
-		gameObjects.push_back(cube);
-		hashTable.insert({ cube->getName(), cube });
+		Cube* cube = new Cube("Cube" + std::to_string(cubeCtr), shaderByteCode, sizeShader);
+		GameObjectManager::getInstance()->addObject(cube);
+		cubeCtr++;
 		break;
 	}
 
 	case GameObjectManager::PLANE:
 	{
-		Plane* plane = new Plane("Plane", shaderByteCode, sizeShader);
-		gameObjects.push_back(plane);
-		hashTable.insert({ plane->getName(), plane });
+		Plane* plane = new Plane("Plane" + std::to_string(planeCtr), shaderByteCode, sizeShader);
+		GameObjectManager::getInstance()->addObject(plane);
+
+		planeCtr++;
 		break;
 	}
 
-	case GameObjectManager::SPHERE:
-
+	case GameObjectManager::SPHERE: 
+	{
+		sphereCtr++;
 		break;
+	}
+		
 
 	default:
 
@@ -125,13 +132,15 @@ void GameObjectManager::deleteObjectByName(std::string name)
 
 void GameObjectManager::setSelectedObject(std::string name)
 {
+	selectedObject = hashTable[name];
 }
 
 void GameObjectManager::setSelectedObject(AGameObject* gameObject)
 {
+	selectedObject = gameObject;
 }
 
 AGameObject* GameObjectManager::getSelectedObject()
 {
-	return nullptr;
+	return selectedObject;
 }

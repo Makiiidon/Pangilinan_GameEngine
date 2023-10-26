@@ -28,6 +28,5 @@ private:
 
 	UIList uiList;
 	UITable uiTable;
-
 };
 

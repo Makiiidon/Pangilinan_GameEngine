@@ -40,5 +40,10 @@ private:
 	List gameObjects;
 	HashTable hashTable;
 	static GameObjectManager* sharedInstance;
+	AGameObject* selectedObject = nullptr;
+	int cubeCtr = 0;
+	int sphereCtr = 0;
+	int planeCtr = 0;
+	int lightCtr = 0;
 };
 

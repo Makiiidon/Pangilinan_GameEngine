@@ -6,6 +6,7 @@
 #include "InputSystem.h"
 #include "SceneCameraHandler.h";
 #include "UIManager.h"
+#include "GameObjectManager.h"
 
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
@@ -137,12 +138,12 @@ void AppWindow::onCreate()
 	cube3->setScale(1);
 	m_gameObjects.push_back(cube3);*/
 
-	for (int i = 0; i < 50; i++) 
+	/*for (int i = 0; i < 50; i++)
 	{
 		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
 		Vector3D position = Vector3D(
-			randomFloat(-3.0f, 3.0f), 
-			randomFloat(-3.0f, 3.0f), 
+			randomFloat(-3.0f, 3.0f),
+			randomFloat(-3.0f, 3.0f),
 			randomFloat(-3.0f, 3.0f)
 		);
 		Vector3D rotation = Vector3D::zeros();
@@ -151,7 +152,7 @@ void AppWindow::onCreate()
 		cube->setAnimationSpeed(randomFloat(1, 3.75f));
 		cube->setScale(1);
 		m_gameObjects.push_back(cube);
-	}
+	}*/
 #pragma endregion
 
 #pragma region Plane
@@ -164,9 +165,7 @@ void AppWindow::onCreate()
 	plane->setScale(1);
 	m_gameObjects.push_back(plane);*/
 #pragma endregion
-
-
-	GraphicsEngine::get()->releaseCompiledShader();
+	//GraphicsEngine::get()->releaseCompiledShader();
 
 	// load pixel shader
 	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
@@ -180,7 +179,10 @@ void AppWindow::onCreate()
 		GraphicsEngine::get()->getDevice(), 
 		GraphicsEngine::get()->getImmediateDeviceContext()->getDeviceContext()
 	);*/
+	
 	UIManager::initialize(Window::getHWND());
+	GameObjectManager::initialize();
+
 }
 
 void AppWindow::onUpdate()
@@ -200,20 +202,9 @@ void AppWindow::onUpdate()
 
 	m_delta_time += EngineTime::getDeltaTime();
 
+	GameObjectManager::getInstance()->updateAll();
+	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 
-	for (unsigned int i = 0; i < m_gameObjects.size(); i++)
-	{
-		// Update the transforms of the Game Objects
-		//if(animate)
-		m_gameObjects[i]->update(EngineTime::getDeltaTime());
-
-		// Renders the Game Objects
-		m_gameObjects[i]->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-
-	}
-
-	// Rendering GUI
-	//GUIHandler::get()->onUpdateEnd();
 	UIManager::getInstance()->drawAllUI();
 
 	m_swap_chain->present(true);

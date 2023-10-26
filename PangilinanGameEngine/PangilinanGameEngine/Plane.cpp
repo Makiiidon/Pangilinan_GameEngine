@@ -26,6 +26,8 @@ Plane::Plane(std::string name, void* shaderByteCode, size_t sizeShader) : AGameO
 
 	m_cb = GraphicsEngine::get()->createConstantBuffer();
 	m_cb->load(&ccc, sizeof(constant));
+
+	std::cout << name << " has been created\n";
 }
 
 Plane::~Plane()
@@ -39,8 +41,8 @@ void Plane::update(float deltaTime)
 
 	Matrix4x4 temp;
 
-	localRotation.m_y = sin(m_ticks);
-	localPosition.m_x = sin(m_ticks);
+	/*localRotation.m_y = sin(m_ticks);
+	localPosition.m_x = sin(m_ticks);*/
 
 	cc.m_world.setScale(localScale);
 
