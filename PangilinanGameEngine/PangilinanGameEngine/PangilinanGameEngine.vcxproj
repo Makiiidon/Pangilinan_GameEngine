@@ -70,18 +70,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(ProjectDir)Libs\ReactPhysics3D\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>$(ProjectDir)\ReactPhysics3D\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/DearIMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Libs/ReactPhysics3D/include;$(ProjectDir)/DearIMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,13 +111,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>;$(ProjectDir)/ReactPhysics3D/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,9 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AComponent.cpp" />
     <ClCompile Include="AGameObject.cpp" />
     <ClCompile Include="AppWindow.cpp" />
     <ClCompile Include="AUIScreen.cpp" />
+    <ClCompile Include="BaseComponentSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -156,6 +165,8 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Quad.cpp" />
@@ -169,9 +180,11 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AComponent.h" />
     <ClInclude Include="AGameObject.h" />
     <ClInclude Include="AppWindow.h" />
     <ClInclude Include="AUIScreen.h" />
+    <ClInclude Include="BaseComponentSystem.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
@@ -195,10 +208,436 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="Matrix4x4.h" />
+    <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\body\CollisionBody.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\body\RigidBody.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\broadphase\DynamicAABBTree.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\Collider.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\CollisionCallback.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\ContactManifold.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\ContactManifoldInfo.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\ContactPair.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\ContactPointInfo.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\HalfEdgeStructure.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\CapsuleVsCapsuleAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\CapsuleVsConvexPolyhedronAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\CollisionDispatch.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\ConvexPolyhedronVsConvexPolyhedronAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\GJK\GJKAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\GJK\VoronoiSimplex.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\NarrowPhaseAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\NarrowPhaseInfoBatch.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\NarrowPhaseInput.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\SAT\SATAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\SphereVsCapsuleAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\SphereVsConvexPolyhedronAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\narrowphase\SphereVsSphereAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\OverlapCallback.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\PolygonVertexArray.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\PolyhedronMesh.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\RaycastInfo.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\AABB.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\BoxShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\CapsuleShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\CollisionShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\ConcaveMeshShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\ConcaveShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\ConvexMeshShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\ConvexPolyhedronShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\ConvexShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\HeightFieldShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\SphereShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\shapes\TriangleShape.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\TriangleMesh.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\collision\TriangleVertexArray.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\BallAndSocketJointComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\ColliderComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\CollisionBodyComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\Components.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\FixedJointComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\HingeJointComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\JointComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\RigidBodyComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\SliderJointComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\components\TransformComponents.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\configuration.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\BallAndSocketJoint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\ContactPoint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\FixedJoint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\HingeJoint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\Joint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\constraint\SliderJoint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Array.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\containers_common.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Deque.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\LinkedList.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Map.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Pair.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Set.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\containers\Stack.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\decimal.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\Entity.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\EntityManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\EventListener.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\Island.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\Islands.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\Material.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\OverlappingPairs.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\PhysicsCommon.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\engine\PhysicsWorld.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\mathematics.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\mathematics_common.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\mathematics_functions.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Matrix2x2.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Matrix3x3.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Quaternion.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Ray.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Transform.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Vector2.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\mathematics\Vector3.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\DefaultAllocator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\HeapAllocator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\MemoryAllocator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\MemoryManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\PoolAllocator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\memory\SingleFrameAllocator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\reactphysics3d.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\BroadPhaseSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\CollisionDetectionSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\ConstraintSolverSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\ContactSolverSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\DynamicsSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\SolveBallAndSocketJointSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\SolveFixedJointSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\SolveHingeJointSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\systems\SolveSliderJointSystem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\utils\DebugRenderer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\utils\DefaultLogger.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\utils\Logger.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReactPhysics3D\include\reactphysics3d\utils\Profiler.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="SceneCameraHandler.h" />
     <ClInclude Include="SceneOutliner.h" />
     <ClInclude Include="SwapChain.h" />

@@ -12,7 +12,9 @@ public:
 	enum PrimitiveType {
 		CUBE,
 		PLANE,
-		SPHERE
+		SPHERE,
+		PHYSICS_CUBE,
+		PHYSICS_PLANE
 	};
 
 	GameObjectManager();

@@ -11,6 +11,12 @@ public:
 
 	}
 
+	float* getMatrix()
+	{
+		//re-arrange to be compatible with react physics
+		return *this->m_mat; // can be read as float [16]
+	}
+
 	void setIdentity() 
 	{
 		::memset(m_mat, 0, sizeof(float) * 16);
@@ -150,6 +156,11 @@ public:
 	void setMatrix(const Matrix4x4& matrix)
 	{
 		::memcpy(m_mat, matrix.m_mat, sizeof(float) * 16);
+	}
+
+	void setMatrix(float matrix[4][4])
+	{
+		::memcpy(m_mat, matrix, sizeof(float) * 16);
 	}
 
 	void setPerspectiveFovLH(float fov, float aspect, float znear, float zfar) 

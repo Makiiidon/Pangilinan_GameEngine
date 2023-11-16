@@ -12,6 +12,8 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
+#include <reactphysics3d/reactphysics3d.h>
+#include "PhysicsSystem.h"
 
 struct vertex
 {
@@ -179,7 +181,7 @@ void AppWindow::onCreate()
 		GraphicsEngine::get()->getDevice(), 
 		GraphicsEngine::get()->getImmediateDeviceContext()->getDeviceContext()
 	);*/
-	
+	BaseComponentSystem::initialize();
 	UIManager::initialize(Window::getHWND());
 	GameObjectManager::initialize();
 
@@ -203,6 +205,7 @@ void AppWindow::onUpdate()
 	m_delta_time += EngineTime::getDeltaTime();
 
 	GameObjectManager::getInstance()->updateAll();
+	BaseComponentSystem::getInstance()->getPhysicsSystem()->updateAllComponents();
 	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 
 	UIManager::getInstance()->drawAllUI();

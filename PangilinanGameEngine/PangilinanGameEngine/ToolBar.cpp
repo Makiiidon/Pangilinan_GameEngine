@@ -56,6 +56,26 @@ void ToolBar::drawUI()
 			GraphicsEngine::get()->releaseCompiledShader();
 
 		}
+		else if (ImGui::MenuItem("Create Physics Cube"))
+		{
+			void* shader_byte_code = nullptr;
+			size_t size_shader = 0;
+			GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+
+			GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_CUBE, shader_byte_code, size_shader);
+			GraphicsEngine::get()->releaseCompiledShader();
+
+		}
+		else if (ImGui::MenuItem("Create Physics Plane"))
+		{
+			void* shader_byte_code = nullptr;
+			size_t size_shader = 0;
+			GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+
+			GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_PLANE, shader_byte_code, size_shader);
+			GraphicsEngine::get()->releaseCompiledShader();
+
+		}
 		// LIGHTS
 		if (ImGui::BeginMenu("Light")) {
 			ImGui::MenuItem("Create Point Light");

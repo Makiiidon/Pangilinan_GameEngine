@@ -7,6 +7,7 @@
 
 class VertexShader;
 class PixelShader;
+class GameObjectManager;
 
 class AGameObject
 {
@@ -32,6 +33,9 @@ public:
 	void setRotation(Vector3D rotation);
 	Vector3D getLocalRotation();
 
+	void setLocalMatrix(float matrix[16]);
+	Matrix4x4 getLocalMatrix();
+	float* getPhysicsLocalMatrix();
 	std::string getName();
 
 	void setActive(bool value);
@@ -62,5 +66,8 @@ protected:
 		Matrix4x4 m_projection;
 		float m_angle;
 	};
+
+private:
+	friend class GameObjectManager;
 };
 

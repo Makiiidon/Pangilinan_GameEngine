@@ -114,6 +114,22 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 		sphereCtr++;
 		break;
 	}
+
+	case GameObjectManager::PHYSICS_CUBE:
+	{
+		/*PhysicsCube* cube = new Cube("PhysicsCube" + std::to_string(cubeCtr), shaderByteCode, sizeShader);
+		GameObjectManager::getInstance()->addObject(cube);
+		cubeCtr++;*/
+		break;
+	}
+	case GameObjectManager::PHYSICS_PLANE:
+	{
+		/*PhysicsPlane* plane = new Plane("PhysicsPlane" + std::to_string(planeCtr), shaderByteCode, sizeShader);
+		GameObjectManager::getInstance()->addObject(plane);
+
+		planeCtr++;*/
+		break;
+	}
 		
 
 	default:

@@ -18,8 +18,6 @@
 #include <iostream>
 #include <vector>
 
-
-
 class AppWindow : public Window, public InputListener
 {
 public:
